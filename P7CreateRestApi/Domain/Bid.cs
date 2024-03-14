@@ -1,14 +1,14 @@
 namespace Dot.Net.WebApi.Domain
 {
-    public class BidList
+    public class Bid
     {
         // TODO: Map columns in data table BIDLIST with corresponding fields
-        public int BidListId { get; set; }
+        public int BidId { get; set; }
         public string Account { get; set; }
         public string BidType { get; set; }
         public double? BidQuantity { get; set; }
         public double? AskQuantity { get; set; }
-        public double? Bid { get; set; }
+        public double? Bid2 { get; set; }
         public double? Ask { get; set; }
         public string Benchmark { get; set; }
         public DateTime? BidListDate { get; set; }

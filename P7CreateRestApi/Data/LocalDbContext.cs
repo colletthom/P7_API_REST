@@ -13,7 +13,7 @@ namespace Dot.Net.WebApi.Data
         }
 
         public DbSet<User> Users { get; set;}
-        public DbSet<BidList> BidLists { get; set; }
+        public DbSet<Bid> Bids { get; set; }
         public DbSet<CurvePoint> CurvePoints { get; set; }
         public DbSet<Rating> Ratings { get; set; }
 
