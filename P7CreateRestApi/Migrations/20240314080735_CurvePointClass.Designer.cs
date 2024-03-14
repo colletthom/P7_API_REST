@@ -4,6 +4,7 @@ using Dot.Net.WebApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace P7CreateRestApi.Migrations
 {
     [DbContext(typeof(LocalDbContext))]
-    partial class LocalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240314080735_CurvePointClass")]
+    partial class CurvePointClass
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,35 +111,7 @@ namespace P7CreateRestApi.Migrations
 
                     b.HasKey("BidListId");
 
-                    b.ToTable("BidLists");
-                });
-
-            modelBuilder.Entity("Dot.Net.WebApi.Domain.CurvePoint", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime?>("AsOfDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<byte?>("CurveId")
-                        .HasColumnType("tinyint");
-
-                    b.Property<double?>("CurvePointValue")
-                        .HasColumnType("float");
-
-                    b.Property<double?>("Term")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CurvePoints");
+                    b.ToTable("BidList");
                 });
 
             modelBuilder.Entity("Dot.Net.WebApi.Domain.User", b =>
