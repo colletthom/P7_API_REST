@@ -103,7 +103,9 @@ namespace Dot.Net.WebApi.Controllers
             _bidList.Side = bidList.Side;
 
             await _context.SaveChangesAsync();
-            return Ok(_bidList);
+
+            var listBid = _context.BidLists;
+            return Ok(listBid);
         }
 
         [HttpDelete]
@@ -116,7 +118,9 @@ namespace Dot.Net.WebApi.Controllers
 
             _context.BidLists.Remove(_bidList);
             await _context.SaveChangesAsync();
-            return Ok();
+
+            var listBid = _context.BidLists;
+            return Ok(listBid);
         }
     }
 }
