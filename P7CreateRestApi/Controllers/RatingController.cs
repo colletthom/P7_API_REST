@@ -90,7 +90,7 @@ namespace Dot.Net.WebApi.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public async Task<IActionResult> DeleteRating(int id)
+        public async Task<IActionResult> DeleteById(int id)
         {
             // TODO: Find Rating by Id and delete the Rating, return to Rating list
             var _rating = _context.Ratings.Find(id);
