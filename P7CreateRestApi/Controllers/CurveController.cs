@@ -48,8 +48,6 @@ namespace Dot.Net.WebApi.Controllers
             }
             var _curve = new CurvePoint
             {
-                
-                Id = curvePoint.Id,
                 CurveId = curvePoint.CurveId,
                 AsOfDate = curvePoint.AsOfDate,
                 Term = curvePoint.Term,
