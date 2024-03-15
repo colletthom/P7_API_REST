@@ -81,8 +81,8 @@ namespace Dot.Net.WebApi.Controllers
         public async Task<IActionResult> DeleteById(int id)
         {
             // TODO: Find Rating by Id and delete the Rating, return to Rating list
-            var _rating = _ratingRepository.DeleteRatingById(id);
-            if (_rating == null)
+            var _rating = await _ratingRepository.DeleteRatingById(id);
+            if (!_rating)
                 return NotFound();
 
             var _ratingList = _context.Ratings;

@@ -1,5 +1,6 @@
 using Dot.Net.WebApi.Data;
 using Dot.Net.WebApi.Domain;
+using Dot.Net.WebApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.Xml.Linq;
 
@@ -10,10 +11,12 @@ namespace Dot.Net.WebApi.Controllers
     public class RuleNameController : ControllerBase
     {
         private readonly LocalDbContext _context;
+        private readonly RuleNameRepository _ruleNameRepository;
 
-        public RuleNameController(LocalDbContext context)
+        public RuleNameController(LocalDbContext context, RuleNameRepository ruleNameRepository)
         {
             _context = context;
+            _ruleNameRepository = ruleNameRepository;
         }
         // TODO: Inject RuleName service
         /*
@@ -41,18 +44,8 @@ namespace Dot.Net.WebApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var _ruleName = new RuleName
-            {
-                Name =ruleName.Name,
-                Description  = ruleName.Description,
-                Json = ruleName.Json,
-                Template = ruleName.Template,
-                SqlStr = ruleName.SqlStr,
-                SqlPart = ruleName.SqlPart,
-            };
-            _context.RuleNames.Add(_ruleName);
-            await _context.SaveChangesAsync();
-            return Ok(_ruleName);
+            var addRuleName = await _ruleNameRepository.AddRuleName(ruleName);
+            return Ok(addRuleName);
         }
 
         [HttpGet]
@@ -60,7 +53,7 @@ namespace Dot.Net.WebApi.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             // TODO: get RuleName by Id and to model then show to the form
-            var _ruleName = await _context.RuleNames.FindAsync(id);
+            var _ruleName = await _ruleNameRepository.GetRuleNameById(id);
             if (_ruleName == null)
                 return NotFound();
             return Ok(_ruleName);
@@ -71,21 +64,12 @@ namespace Dot.Net.WebApi.Controllers
         public async Task<IActionResult> UpdateById(int id, [FromBody] RuleName ruleName)
         {
             // TODO: check required fields, if valid call service to update RuleName and return RuleName list
-            var _ruleName = _context.RuleNames.Find(id);
-            if (_ruleName == null)
-                return NotFound();
-
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            _ruleName.Name = ruleName.Name;
-            _ruleName.Description = ruleName.Description;
-            _ruleName.Json = ruleName.Json;
-            _ruleName.Template = ruleName.Template;
-            _ruleName.SqlStr = ruleName.SqlStr;
-            _ruleName.SqlPart = ruleName.SqlPart;
-
-            await _context.SaveChangesAsync();
+            var _ruleName = await _ruleNameRepository.UpdateRuleNameById(id, ruleName);
+            if (!_ruleName)
+                return NotFound();
 
             var _ruleNameList = _context.RuleNames;
             return Ok(_ruleNameList);
@@ -96,12 +80,9 @@ namespace Dot.Net.WebApi.Controllers
         public async Task<IActionResult> DeleteById(int id)
         {
             // TODO: Find RuleName by Id and delete the RuleName, return to Rule list
-            var _ruleName = _context.RuleNames.Find(id);
-            if (_ruleName == null)
+            var _ruleName = await _ruleNameRepository.DeleteRuleNameById(id);
+            if (!_ruleName)
                 return NotFound();
-
-            _context.RuleNames.Remove(_ruleName);
-            await _context.SaveChangesAsync();
 
             var _ruleNameList = _context.RuleNames;
             return Ok(_ruleNameList);
