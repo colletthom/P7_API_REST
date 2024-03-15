@@ -75,11 +75,9 @@ namespace Dot.Net.WebApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var updatedCurve = await _curveRepository.UpdateCurve(id, curvePoint);
-            if (updatedCurve == null)
-            {
+            var updateCurve = await _curveRepository.UpdateCurveById(id, curvePoint);
+            if (!updateCurve)
                 return NotFound();
-            }
 
             var _curveList = _context.CurvePoints;
             return Ok(_curveList);
@@ -91,7 +89,7 @@ namespace Dot.Net.WebApi.Controllers
         public async Task<IActionResult> DeleteById (int id)
         {
             // TODO: Find Curve by Id and delete the Curve, return to Curve list
-            var _curve = await _curveRepository.DeleteCurve(id);
+            var _curve = await _curveRepository.DeleteCurveById(id);
             if (!_curve)
                 return NotFound();
 

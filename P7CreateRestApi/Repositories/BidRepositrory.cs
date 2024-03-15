@@ -48,12 +48,12 @@ namespace Dot.Net.WebApi.Repositories
             return await _context.Bids.FindAsync(id);
         }
 
-        public async Task<Bid> UpdateBid(int id, Bid bid)
+        public async Task<bool> UpdateBid(int id, Bid bid)
         {
             var _bid = _context.Bids.Find(id);
             if (_bid == null)
             {
-                return null;
+                return false;
             }
 
             _bid.Account = bid.Account;
@@ -80,7 +80,7 @@ namespace Dot.Net.WebApi.Repositories
 
             await _context.SaveChangesAsync();
 
-            return _bid;
+            return true;
         }
 
         public async Task<bool> DeleteBid(int id)

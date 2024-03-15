@@ -54,13 +54,11 @@ namespace Dot.Net.WebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            var updatedBid = await _bidRepository.UpdateBid(id, bid);
-            if (updatedBid == null)
-            {
+            var updateBid = await _bidRepository.UpdateBid(id, bid);
+            if (!updateBid)
                 return NotFound();
-            }
-           
-             var bidList = _context.Bids;
+
+            var bidList = _context.Bids;
              return Ok(bidList);
         }
 

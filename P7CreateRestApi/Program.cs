@@ -8,6 +8,7 @@ ConfigurationManager configuration = builder.Configuration;
 // Add services to the container.
 builder.Services.AddScoped<BidRepository>();
 builder.Services.AddScoped<CurveRepository>();
+builder.Services.AddScoped<RatingRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

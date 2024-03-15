@@ -32,12 +32,12 @@ namespace Dot.Net.WebApi.Repositories
             return await _context.CurvePoints.FindAsync(id);
         }
 
-        public async Task<CurvePoint> UpdateCurve(int id, CurvePoint curve)
+        public async Task<bool> UpdateCurveById(int id, CurvePoint curve)
         {
             var _curve = _context.CurvePoints.Find(id);
             if (_curve == null)
             {
-                return null;
+                return false;
             }
 
             _curve.CurveId = curve.CurveId;
@@ -46,10 +46,10 @@ namespace Dot.Net.WebApi.Repositories
             _curve.CurvePointValue = curve.CurvePointValue;
 
             await _context.SaveChangesAsync();
-            return _curve;
+            return true;
         }
 
-        public async Task<bool> DeleteCurve(int id)
+        public async Task<bool> DeleteCurveById(int id)
         {
             var curve = await _context.CurvePoints.FindAsync(id);
             if (curve == null)
