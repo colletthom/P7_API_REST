@@ -1,6 +1,8 @@
 using Dot.Net.WebApi.Domain;
 using Dot.Net.WebApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace Dot.Net.WebApi.Controllers
 {
@@ -14,7 +16,7 @@ namespace Dot.Net.WebApi.Controllers
         {
             _userRepository = userRepository;
         }
-
+        /*
         [HttpGet]
         [Route("list")]
         public IActionResult Home()
@@ -23,25 +25,43 @@ namespace Dot.Net.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("add")]
-        public IActionResult AddUser([FromBody]User user)
-        {
-            return Ok();
-        }
-
-        [HttpGet]
         [Route("validate")]
-        public IActionResult Validate([FromBody]User user)
+        public IActionResult Validate([FromBody] User user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-           
-           _userRepository.Add(user);
+
+            _userRepository.Add(user);
 
             return Ok();
         }
+        */
+
+        [HttpGet]
+        //[Route("add")]
+        [Route("")]
+        public async Task<IActionResult> Add([FromBody]User user)
+        {
+            /* if (!ModelState.IsValid)
+             {
+                 return BadRequest(ModelState);
+             }
+             var _user = new User
+             {
+                 UserName = user.UserName, 
+                 Password = user.Password,
+                 Fullname = user.Fullname,
+                 Role = user.Role
+             };
+             _context.Users.Add(_user);
+             await _context.SaveChangesAsync();
+             return Ok(_trade);*/
+            return Ok();
+        }
+
+
 
         [HttpGet]
         [Route("update/{id}")]
