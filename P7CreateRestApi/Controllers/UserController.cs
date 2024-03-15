@@ -1,3 +1,4 @@
+using Dot.Net.WebApi.Data;
 using Dot.Net.WebApi.Domain;
 using Dot.Net.WebApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +12,12 @@ namespace Dot.Net.WebApi.Controllers
     public class UserController : ControllerBase
     {
         private UserRepository _userRepository;
+        private readonly LocalDbContext _context;
 
-        public UserController(UserRepository userRepository)
+        public UserController(UserRepository userRepository, LocalDbContext context)
         {
             _userRepository = userRepository;
+            _context = context;
         }
         /*
         [HttpGet]
@@ -39,67 +42,67 @@ namespace Dot.Net.WebApi.Controllers
         }
         */
 
-        [HttpGet]
+        [HttpPost]
         //[Route("add")]
         [Route("")]
         public async Task<IActionResult> Add([FromBody]User user)
         {
-            /* if (!ModelState.IsValid)
+             if (!ModelState.IsValid)
              {
                  return BadRequest(ModelState);
              }
-             var _user = new User
-             {
-                 UserName = user.UserName, 
-                 Password = user.Password,
-                 Fullname = user.Fullname,
-                 Role = user.Role
-             };
-             _context.Users.Add(_user);
-             await _context.SaveChangesAsync();
-             return Ok(_trade);*/
-            return Ok();
+
+            var addUser = await _userRepository.AddUser(user);
+            return Ok(addUser); 
         }
-
-
 
         [HttpGet]
-        [Route("update/{id}")]
-        public IActionResult ShowUpdateForm(int id)
+        [Route("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            User user = _userRepository.FindById(id);
+            var user = await _userRepository.GetUserById(id);
             
             if (user == null)
-                throw new ArgumentException("Invalid user Id:" + id);
+                return NotFound();
 
-            return Ok();
+            return Ok(user);
         }
 
-        [HttpPost]
-        [Route("update/{id}")]
-        public IActionResult UpdateUser(int id, [FromBody] User user)
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> UpdateUserById(int id, [FromBody] User user)
         {
             // TODO: check required fields, if valid call service to update Trade and return Trade list
-            return Ok();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var _user = await _userRepository.UpdateUserById(id, user);
+            if (!_user)
+                return NotFound();
+
+            var _userList = _context.Users;
+            return Ok(_userList);
         }
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult DeleteUser(int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
-            User user = _userRepository.FindById(id);
+            var user = await _userRepository.DeleteUserById(id);
             
             if (user == null)
-                throw new ArgumentException("Invalid user Id:" + id);
+                return NotFound();
 
-            return Ok();
+            var _userList = _context.Users;
+            return Ok(_userList);
         }
 
+        /*
         [HttpGet]
         [Route("/secure/article-details")]
         public async Task<ActionResult<List<User>>> GetAllUserArticles()
         {
             return Ok();
-        }
+        }*/
     }
 }
