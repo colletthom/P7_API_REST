@@ -1,5 +1,6 @@
 using Dot.Net.WebApi.Data;
 using Dot.Net.WebApi.Domain;
+using Dot.Net.WebApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -13,10 +14,12 @@ namespace Dot.Net.WebApi.Controllers
     public class TradeController : ControllerBase
     {
         private readonly LocalDbContext _context;
+        private readonly TradeRepository _tradeRepository;
 
-        public TradeController(LocalDbContext context)
+        public TradeController(LocalDbContext context, TradeRepository tradeRepository)
         {
             _context = context;
+            _tradeRepository = tradeRepository;
         }
         // TODO: Inject Trade service
         /*
@@ -44,31 +47,8 @@ namespace Dot.Net.WebApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var _trade = new Trade
-            {
-                Account = trade.Account,
-                AccountType = trade.AccountType, 
-                SellQuantity = trade.SellQuantity,
-                BuyPrice = trade.BuyPrice,
-                SellPrice = trade.SellPrice,
-                TradeDate = trade.TradeDate,
-                TradeSecurity = trade.TradeSecurity,
-                TradeStatus = trade.TradeStatus,
-                Trader = trade.Trader,
-                Benchmark = trade.Benchmark,
-                Book = trade.Book,
-                CreationName = trade.CreationName,
-                CreationDate = trade.CreationDate,
-                RevisionName = trade.RevisionName,
-                RevisionDate = trade.RevisionDate,
-                DealName = trade.DealName,
-                DealType = trade.DealType,
-                SourceListId = trade.SourceListId,
-                Side = trade.Side,
-            };
-            _context.Trades.Add(_trade);
-            await _context.SaveChangesAsync();
-            return Ok(_trade);
+            var addTrade = await _tradeRepository.AddTrade(trade);
+            return Ok(addTrade);
         }
 
         [HttpGet]
@@ -76,7 +56,7 @@ namespace Dot.Net.WebApi.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             // TODO: get Trade by Id and to model then show to the form
-            var _trade = await _context.Trades.FindAsync(id);
+            var _trade = await _tradeRepository.GetTradeById(id);
             if (_trade == null)
                 return NotFound();
             return Ok(_trade);
@@ -87,34 +67,12 @@ namespace Dot.Net.WebApi.Controllers
         public async Task<IActionResult> UpdateById(int id, [FromBody] Trade trade)
         {
             // TODO: check required fields, if valid call service to update Trade and return Trade list
-            var _trade = _context.Trades.Find(id);
-            if (_trade == null)
-                return NotFound();
-
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            _trade.Account = trade.Account;
-            _trade.AccountType = trade.AccountType;
-            _trade.SellQuantity = trade.SellQuantity;
-            _trade.BuyPrice = trade.BuyPrice;
-            _trade.SellPrice = trade.SellPrice;
-            _trade.TradeDate = trade.TradeDate;
-            _trade.TradeSecurity = trade.TradeSecurity;
-            _trade.TradeStatus = trade.TradeStatus;
-            _trade.Trader = trade.Trader;
-            _trade.Benchmark = trade.Benchmark;
-            _trade.Book = trade.Book;
-            _trade.CreationName = trade.CreationName;
-            _trade.CreationDate = trade.CreationDate;
-            _trade.RevisionName = trade.RevisionName;
-            _trade.RevisionDate = trade.RevisionDate;
-            _trade.DealName = trade.DealName;
-            _trade.DealType = trade.DealType;
-            _trade.SourceListId = trade.SourceListId;
-            _trade.Side = trade.Side;
-
-            await _context.SaveChangesAsync();
+            var _trade = await _tradeRepository.UpdateTradeById(id, trade);
+            if (!_trade)
+                return NotFound();
 
             var _tradeList = _context.Trades;
             return Ok(_tradeList);
@@ -125,12 +83,9 @@ namespace Dot.Net.WebApi.Controllers
         public async Task<IActionResult> DeleteById(int id)
         {
             // TODO: Find Trade by Id and delete the Trade, return to Trade list
-            var _trade = _context.Trades.Find(id);
-            if (_trade == null)
+            var _trade = await _tradeRepository.DeleteTradeById(id);
+            if (!_trade)
                 return NotFound();
-
-            _context.Trades.Remove(_trade);
-            await _context.SaveChangesAsync();
 
             var _tradeList = _context.Trades;
             return Ok(_tradeList);

@@ -10,6 +10,7 @@ builder.Services.AddScoped<BidRepository>();
 builder.Services.AddScoped<CurveRepository>();
 builder.Services.AddScoped<RatingRepository>();
 builder.Services.AddScoped<RuleNameRepository>();
+builder.Services.AddScoped<TradeRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
