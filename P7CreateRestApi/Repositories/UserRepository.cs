@@ -1,5 +1,6 @@
 using Dot.Net.WebApi.Data;
 using Dot.Net.WebApi.Domain;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 
@@ -8,11 +9,15 @@ namespace Dot.Net.WebApi.Repositories
     public class UserRepository
     {
         public LocalDbContext _context { get; }
+        private readonly UserManager<User> _userManager;
 
-        public UserRepository(LocalDbContext context)
+        public UserRepository(LocalDbContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
+
+
 
         public User FindByUserName(string userName)
         {
@@ -25,9 +30,10 @@ namespace Dot.Net.WebApi.Repositories
             return await _context.Users.ToListAsync();
         }
 
-        public async Task<User> AddUser(User user)
+        public async Task<IdentityResult> AddUser(User user)
         {
-            var _user = new User 
+            var result = await _userManager.CreateAsync(user);
+            /*var _user = new User 
             { 
                 UserName = user.UserName,
                 Password = user.Password,
@@ -36,8 +42,8 @@ namespace Dot.Net.WebApi.Repositories
             };
 
             _context.Users.Add(_user);
-            await _context.SaveChangesAsync();
-            return _user;
+            await _context.SaveChangesAsync();*/
+            return result;
         }
 
         public async Task<User> GetUserById(int id)
@@ -47,8 +53,10 @@ namespace Dot.Net.WebApi.Repositories
 
         public async Task<bool> UpdateUserById(int id, User user)
         {
+
             var _user = _context.Users.Find(id);
-            if (_user == null)
+            var result = await _userManager.UpdateAsync(_user);
+            /*if (_user == null)
             {
                 return false;
             }
@@ -58,7 +66,7 @@ namespace Dot.Net.WebApi.Repositories
             _user.Fullname = user.Fullname;
             _user.Role = user.Role;
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();*/
             return true;
         }
 
