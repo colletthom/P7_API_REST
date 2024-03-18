@@ -3,10 +3,11 @@ using Dot.Net.WebApi.Domain;
 using Dot.Net.WebApi.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using P7CreateRestApi.Data;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
-ConfigurationManager configuration = builder.Configuration;
-
+var configuration = builder.Configuration;
 
 // Add services to the container.
 builder.Services.AddScoped<BidRepository>();
@@ -15,7 +16,7 @@ builder.Services.AddScoped<RatingRepository>();
 builder.Services.AddScoped<RuleNameRepository>();
 builder.Services.AddScoped<TradeRepository>();
 builder.Services.AddScoped<UserRepository>();
-//builder.Services.AddScoped<UserManager<User>>();
+builder.Services.AddScoped<UserManager<User>>();
 
 
 builder.Services.AddControllers();
@@ -25,6 +26,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<LocalDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<P7CreateRestApiContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddAuthentication()
     .AddJwtBearer();
@@ -33,7 +36,6 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
 {
     options.Password.RequireDigit = true;
     options.Password.RequireLowercase = true;
-
 })
           .AddEntityFrameworkStores<LocalDbContext>()
           .AddDefaultTokenProviders();
