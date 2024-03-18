@@ -12,11 +12,14 @@ namespace Dot.Net.WebApi.Controllers
     {
         private readonly BidRepository _bidRepository;
         private readonly LocalDbContext _context;
+        //private readonly ILogger<BidController> _logger;
 
         public BidController(BidRepository bidRepository, LocalDbContext context)
+        //public BidController(BidRepository bidRepository, LocalDbContext context, ILogger<BidController> logger)
         {
             _bidRepository = bidRepository;
-            _context = context; 
+            _context = context;
+            //_logger = logger;
         }
 
         [HttpPost]
@@ -24,7 +27,8 @@ namespace Dot.Net.WebApi.Controllers
         public async Task<IActionResult> Add([FromBody] Bid bid)
         {
             // TODO: check data valid and save to db, after saving return bid list
-                               
+            //_logger.LogInformation("this is AddBid");
+            //Logger.WriteLog("this is AddBid");
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
