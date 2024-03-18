@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Dot.Net.WebApi.Domain;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Dot.Net.WebApi.Data
 {
@@ -18,6 +19,6 @@ namespace Dot.Net.WebApi.Data
         public DbSet<Rating> Ratings { get; set; }
         public DbSet<RuleName> RuleNames { get; set; }
         public DbSet<Trade> Trades { get; set; }
-        public DbSet<Log> Logs { get; set; }
+       // public DbSet<Log> Logs { get; set; }
     }
 }
