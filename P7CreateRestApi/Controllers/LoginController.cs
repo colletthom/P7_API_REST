@@ -15,19 +15,55 @@ namespace Dot.Net.WebApi.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
+        private readonly IPasswordHasher<User> _passwordHasher;
 
-        public LoginController(UserManager<User> userManager, IConfiguration configuration)
+        public LoginController(UserManager<User> userManager, IConfiguration configuration, IPasswordHasher<User> passwordHasher)
         {
             _userManager = userManager;
             _configuration = configuration;
+            _passwordHasher = passwordHasher;
         }
 
         [HttpPost]
-        [Route("login")]
-        public async Task<IActionResult> Login([FromBody] LoginModel model)
+        [Route("Register")]
+        public async Task<IActionResult> Register([FromBody] RegisterModel model)
+        {
+
+            // Validation des données d'inscription
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Création du compte utilisateur
+            var user = new User
+            {
+                UserName = model.UserName,
+                FullName = model.FullName,
+                Role = "User"
+            };
+            var passwordHash = _passwordHasher.HashPassword(user, model.Password);
+            user.PasswordHash = passwordHash;
+
+            var result = await _userManager.CreateAsync(user);
+
+            if (result.Succeeded)
+            {
+                return Ok("User created successfully");
+            }
+            else
+            {
+                return BadRequest(result.Errors);
+            }
+        }
+
+        [HttpPost]
+        [Route("GetToken")]
+        public async Task<IActionResult> GetToken([FromBody] LoginModel model)
         {
             // Vérifie les informations d'identification de l'utilisateur
             var user = await _userManager.FindByNameAsync(model.UserName);
+
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
                 // Générer le token JWT
