@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using System.Drawing;
+using System.Security.Claims;
 
 namespace Dot.Net.WebApi.Controllers
 {
@@ -25,7 +26,7 @@ namespace Dot.Net.WebApi.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "AccessWriteActions")]
+        [Authorize(Policy = "AccessWriteActions")]       
         [Route("")]
         public async Task<IActionResult> Add([FromBody] Bid bid)
         {

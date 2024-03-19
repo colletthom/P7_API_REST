@@ -1,6 +1,7 @@
 using Dot.Net.WebApi.Data;
 using Dot.Net.WebApi.Domain;
 using Dot.Net.WebApi.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -43,6 +44,7 @@ namespace Dot.Net.WebApi.Controllers
         */
 
         [HttpPost]
+        [Authorize(Policy = "AccessWriteActions")]
         //[Route("add")]
         [Route("")]
         public async Task<IActionResult> Add([FromBody]User user)
@@ -57,6 +59,7 @@ namespace Dot.Net.WebApi.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "AccessWriteActions")]
         [Route("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -69,6 +72,7 @@ namespace Dot.Net.WebApi.Controllers
         }
 
         [HttpPut]
+        [Authorize(Policy = "AccessWriteActions")]
         [Route("{id}")]
         public async Task<IActionResult> UpdateUserById(int id, [FromBody] User user)
         {
@@ -85,6 +89,7 @@ namespace Dot.Net.WebApi.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Policy = "AccessWriteActions")]
         [Route("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {

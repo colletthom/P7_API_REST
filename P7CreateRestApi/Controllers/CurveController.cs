@@ -1,6 +1,7 @@
 using Dot.Net.WebApi.Data;
 using Dot.Net.WebApi.Domain;
 using Dot.Net.WebApi.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
@@ -42,6 +43,7 @@ namespace Dot.Net.WebApi.Controllers
 
         //[HttpGet]
         [HttpPost]
+        [Authorize(Policy = "AccessWriteActions")]
         //[Route("add")]
         [Route("")]
         public async Task<IActionResult> Add([FromBody]CurvePoint curvePoint)
@@ -55,6 +57,7 @@ namespace Dot.Net.WebApi.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "AccessGetAction,AccessWriteActions")]
         //[Route("update/{id}")]
         [Route("{id}")]
         //public IActionResult ShowUpdateForm(int id)
@@ -68,6 +71,7 @@ namespace Dot.Net.WebApi.Controllers
         }
 
         [HttpPut]
+        [Authorize(Policy = "AccessWriteActions")]
         [Route("{id}")]
         public async Task<IActionResult> UpdateById(int id, [FromBody] CurvePoint curvePoint)
         {
@@ -84,6 +88,7 @@ namespace Dot.Net.WebApi.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Policy = "AccessWriteActions")]
         [Route("{id}")]
         //public IActionResult DeleteBid(int id)
         public async Task<IActionResult> DeleteById (int id)

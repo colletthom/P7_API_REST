@@ -11,6 +11,7 @@ using Swashbuckle.AspNetCore.SwaggerUI;
 using Dot.Net.WebApi;
 using P7CreateRestApi;
 using Microsoft.OpenApi.Models;
+using System.IdentityModel.Tokens.Jwt;
 
 internal class Program
 {
@@ -32,10 +33,7 @@ internal class Program
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
-        /* builder.Services.AddSwaggerGen(c =>
-         {
-             c.OperationFilter<AuthentificationToken>();
-         });*/
+
 
         builder.Services.AddSwaggerGen(c =>
         {
@@ -46,34 +44,44 @@ internal class Program
                 Description = "JWT Authorization header using the Bearer scheme",
                 Name = "Authorization",
                 In = ParameterLocation.Header,
-                Type = SecuritySchemeType.ApiKey,
-                Scheme = "Bearer"
+                Type = SecuritySchemeType.Http,
+                Scheme = "bearer"
             });
 
             c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
             {
-                Reference = new OpenApiReference
                 {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    Array.Empty<string>()
                 }
-            },
-            Array.Empty<string>()
-        }
-    });
+            });
 
-            c.OperationFilter<AuthentificationToken>();
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new[] { "User", "Admin" } // Les rôles nécessaires pour accéder à l'API
+                }
+            });
         });
 
-        //////////////////
 
         builder.Services.AddDbContext<LocalDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-        /*builder.Services.AddDbContext<P7CreateRestApiContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));*/
 
         builder.Services.AddIdentity<User, IdentityRole>(options =>
         {
@@ -82,7 +90,8 @@ internal class Program
             options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
         })
                   .AddEntityFrameworkStores<LocalDbContext>()
-                  .AddDefaultTokenProviders();
+                  .AddDefaultTokenProviders()
+                  .AddRoles<IdentityRole>();
 
         builder.Services.AddAuthentication(options =>
         {
@@ -101,16 +110,23 @@ internal class Program
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"]))
             };
         });
-
+        
         builder.Services.AddAuthorization(options =>
         {
-            options.AddPolicy("AccessGetAction", policy => policy.RequireRole("User"));
+            options.AddPolicy("AccessGetAction", policy => policy.RequireRole("User", "Admin"));
             options.AddPolicy("AccessWriteActions", policy => policy.RequireRole("Admin"));
         });
 
         var app = builder.Build();
 
-        app.UseCors();
+        app.UseHttpsRedirection();
+
+        app.UseCors(options =>
+        {
+            options.AllowAnyOrigin();
+            options.AllowAnyMethod();
+            options.AllowAnyHeader();
+        });
         app.UseAuthentication();
         app.UseAuthorization();
 
@@ -120,8 +136,6 @@ internal class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-
-        app.UseHttpsRedirection();
 
         app.MapControllers();
 

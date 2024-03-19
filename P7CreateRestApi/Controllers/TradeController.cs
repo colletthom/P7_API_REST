@@ -1,6 +1,7 @@
 using Dot.Net.WebApi.Data;
 using Dot.Net.WebApi.Domain;
 using Dot.Net.WebApi.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -40,6 +41,7 @@ namespace Dot.Net.WebApi.Controllers
         }*/
 
         [HttpPost]
+        [Authorize(Policy = "AccessWriteActions")]
         [Route("")]
         public async Task<IActionResult> Add([FromBody]Trade trade)
         {
@@ -52,6 +54,7 @@ namespace Dot.Net.WebApi.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "AccessGetAction,AccessWriteActions")]
         [Route("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -63,6 +66,7 @@ namespace Dot.Net.WebApi.Controllers
         }
 
         [HttpPut]
+        [Authorize(Policy = "AccessWriteActions")]
         [Route("{id}")]
         public async Task<IActionResult> UpdateById(int id, [FromBody] Trade trade)
         {
@@ -79,6 +83,7 @@ namespace Dot.Net.WebApi.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Policy = "AccessWriteActions")]
         [Route("{id}")]
         public async Task<IActionResult> DeleteById(int id)
         {
