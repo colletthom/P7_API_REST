@@ -4,8 +4,13 @@ using Dot.Net.WebApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
+using Microsoft.IdentityModel.JsonWebTokens;
+using Newtonsoft.Json.Linq;
+using System.Diagnostics;
 using System.Drawing;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace Dot.Net.WebApi.Controllers
 {
@@ -15,6 +20,7 @@ namespace Dot.Net.WebApi.Controllers
     {
         private readonly BidRepository _bidRepository;
         private readonly LocalDbContext _context;
+
         //private readonly ILogger<BidController> _logger;
 
         public BidController(BidRepository bidRepository, LocalDbContext context)
@@ -38,6 +44,7 @@ namespace Dot.Net.WebApi.Controllers
                 return BadRequest(ModelState);
             }
             var addedBid = await _bidRepository.AddBid(bid);
+
             return Ok(addedBid);
 
         }
@@ -51,6 +58,15 @@ namespace Dot.Net.WebApi.Controllers
             var _bid = await _bidRepository.GetBidById(id);
             if (_bid == null)
                 return NotFound();
+
+            // Récupérer le nom d'utilisateur poiur les log Fonction à rédiger
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            var firstClaim = identity.Claims.FirstOrDefault();
+            if (firstClaim != null)
+            {
+                var value = firstClaim.Value;
+            }
+
             return Ok(_bid);
         }
 

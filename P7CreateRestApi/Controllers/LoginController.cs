@@ -68,6 +68,7 @@ namespace Dot.Net.WebApi.Controllers
             {
                 // Générer le token JWT
                 var token = GenerateJwtToken(user);
+
                 return Ok(new { Token = token });
             }
 
@@ -83,8 +84,7 @@ namespace Dot.Net.WebApi.Controllers
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.Role, user.Role)
-                // Ajoutez d'autres revendications personnalisées si nécessaire
+                new Claim(ClaimTypes.Role, user.Role),
             };
 
             var token = new JwtSecurityToken(
