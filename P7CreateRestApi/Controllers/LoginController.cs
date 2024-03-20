@@ -85,6 +85,7 @@ namespace Dot.Net.WebApi.Controllers
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.Role, user.Role),
+                new Claim("userId", user.Id.ToString())
             };
 
             var token = new JwtSecurityToken(

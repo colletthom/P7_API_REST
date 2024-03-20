@@ -20,14 +20,16 @@ namespace Dot.Net.WebApi.Controllers
     {
         private readonly BidRepository _bidRepository;
         private readonly LocalDbContext _context;
+        private readonly LogService _logService;
 
         //private readonly ILogger<BidController> _logger;
 
-        public BidController(BidRepository bidRepository, LocalDbContext context)
+        public BidController(BidRepository bidRepository, LocalDbContext context, LogService logService)
         //public BidController(BidRepository bidRepository, LocalDbContext context, ILogger<BidController> logger)
         {
             _bidRepository = bidRepository;
             _context = context;
+            _logService = logService;
             //_logger = logger;
         }
 
@@ -59,13 +61,7 @@ namespace Dot.Net.WebApi.Controllers
             if (_bid == null)
                 return NotFound();
 
-            // Récupérer le nom d'utilisateur poiur les log Fonction à rédiger
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            var firstClaim = identity.Claims.FirstOrDefault();
-            if (firstClaim != null)
-            {
-                var value = firstClaim.Value;
-            }
+            await _logService.CreateLog(HttpContext, 2, 1);
 
             return Ok(_bid);
         }

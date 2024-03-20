@@ -28,6 +28,7 @@ internal class Program
         builder.Services.AddScoped<TradeRepository>();
         builder.Services.AddScoped<UserRepository>();
         builder.Services.AddScoped<UserManager<User>>();
+        builder.Services.AddScoped<LogService>();
 
 
         builder.Services.AddControllers();
