@@ -14,7 +14,7 @@ namespace Dot.Net.WebApi.Repositories
             _context = context;
         }
 
-        public async Task<bool> CreateLog(HttpContext _httpContext, int crud, int entity)
+        public async Task<bool> CreateLog(HttpContext _httpContext, int crud, int entity, string logDescriprion)
         {
             int userId=0;
             var userIdClaim = _httpContext.User.Claims.FirstOrDefault(c => c.Type == "userId");
@@ -32,7 +32,7 @@ namespace Dot.Net.WebApi.Repositories
                 LogDateTime= DateTime.UtcNow,
                 CRUD = crud,
                 Entity = entity,
-
+                LogDescription = logDescriprion,
             };
             _context.Logs.Add(myLog);
             await _context.SaveChangesAsync();
