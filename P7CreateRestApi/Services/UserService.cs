@@ -2,6 +2,7 @@ using Dot.Net.WebApi.Data;
 using Dot.Net.WebApi.Domain;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using P7CreateRestApi.Models;
 using System.Data;
 
 namespace Dot.Net.WebApi.Repositories
@@ -10,14 +11,14 @@ namespace Dot.Net.WebApi.Repositories
     {
         public LocalDbContext _context { get; }
         private readonly UserManager<User> _userManager;
+        private readonly IPasswordHasher<User> _passwordHasher;
 
-        public UserService(LocalDbContext context, UserManager<User> userManager)
+        public UserService(LocalDbContext context, UserManager<User> userManager, IPasswordHasher<User> passwordHasher)
         {
             _context = context;
             _userManager = userManager;
+            _passwordHasher = passwordHasher;
         }
-
-
 
         public User FindByUserName(string userName)
         {
@@ -25,48 +26,41 @@ namespace Dot.Net.WebApi.Repositories
                                   .FirstOrDefault();
         }
 
-        public async Task<List<User>> FindAll()
+        public async Task<User> AddUser(RegisterModel model)
         {
-            return await _context.Users.ToListAsync();
-        }
 
-        public async Task<IdentityResult> AddUser(User user)
-        {
-            var result = await _userManager.CreateAsync(user);
-            /*var _user = new User 
-            { 
-                UserName = user.UserName,
-                Password = user.Password,
-                Fullname = user.Fullname,
-                Role = user.Role
+            // Création du compte utilisateur
+            var user = new User
+            {
+                UserName = model.UserName,
+                FullName = model.FullName,
+                Role = "User"
             };
+            var passwordHash = _passwordHasher.HashPassword(user, model.Password);
+            user.PasswordHash = passwordHash;
 
-            _context.Users.Add(_user);
-            await _context.SaveChangesAsync();*/
-            return result;
-        }
-
-        public async Task<User> GetUserById(int id)
-        {
-            return await _context.Users.FindAsync(id);
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+            return user;
         }
 
         public async Task<bool> UpdateUserById(int id, User user)
         {
 
             var _user = _context.Users.Find(id);
-            var result = await _userManager.UpdateAsync(_user);
-            /*if (_user == null)
+
+            if (_user != null)
             {
-                return false;
+                _user.FullName = user.FullName; 
+                _user.Role = user.Role;
+                _user.UserName = user.UserName;
+                _user.PasswordHash = user.PasswordHash;
+
+                var result = await _userManager.UpdateAsync(_user);
             }
 
-            _user.UserName = user.UserName;
-            _user.Password = user.Password;
-            _user.Fullname = user.Fullname;
-            _user.Role = user.Role;
 
-            await _context.SaveChangesAsync();*/
+                await _context.SaveChangesAsync();
             return true;
         }
 

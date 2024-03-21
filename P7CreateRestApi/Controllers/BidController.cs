@@ -3,6 +3,8 @@ using Dot.Net.WebApi.Domain;
 using Dot.Net.WebApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 
 
 namespace Dot.Net.WebApi.Controllers
@@ -43,20 +45,32 @@ namespace Dot.Net.WebApi.Controllers
 
         [HttpGet]
         [Authorize(Policy = "AccessGetAction")]
+        [Route("")]
+        public async Task<IActionResult> GetAll()
+        {
+            var _bid = await _context.RuleNames.ToListAsync();
+            string logDescription = "Le GetAll a réussi";
+
+            await _logService.CreateLog(HttpContext, 2, 1, logDescription);
+            return Ok(_bid);
+        }
+
+        [HttpGet]
+        [Authorize(Policy = "AccessGetAction")]
         //[Route("update/{id}")]
         [Route("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var _bid = await _bidRepository.GetBidById(id);
+            var _bid = await _context.Bids.FindAsync(id);
             string logDescription="Le GetBidById a réussi";
             if (_bid == null)
             {
                 logDescription = "Le GetBidById a échoué {id} non trouvé";
-                await _logService.CreateLog(HttpContext, 2, 1, logDescription);
+                await _logService.CreateLog(HttpContext, 3, 1, logDescription);
                 return NotFound();
             }
                 
-            await _logService.CreateLog(HttpContext, 2, 1,logDescription);
+            await _logService.CreateLog(HttpContext, 3, 1,logDescription);
             return Ok(_bid);
         }
 
@@ -69,7 +83,7 @@ namespace Dot.Net.WebApi.Controllers
             if (!ModelState.IsValid)
             {
                 logDescription = "Le UpdateBidById a échoué Model non valide";
-                await _logService.CreateLog(HttpContext, 3, 1, logDescription);
+                await _logService.CreateLog(HttpContext, 4, 1, logDescription);
                 return BadRequest(ModelState);
             }
 
@@ -77,11 +91,11 @@ namespace Dot.Net.WebApi.Controllers
             if (!updateBid)
             {
                 logDescription = "Le UpdateBidById a échoué {id} non trouvé";
-                await _logService.CreateLog(HttpContext, 3, 1, logDescription);
+                await _logService.CreateLog(HttpContext, 4, 1, logDescription);
                 return NotFound();
             }
 
-            await _logService.CreateLog(HttpContext, 3, 1, logDescription);
+            await _logService.CreateLog(HttpContext, 4, 1, logDescription);
             var bidList = _context.Bids;            
             return Ok(bidList);
         }
@@ -96,11 +110,11 @@ namespace Dot.Net.WebApi.Controllers
             if (!_bid)
             {
                 logDescription = "Le DeleteBidById a échoué {id} non trouvé";
-                await _logService.CreateLog(HttpContext, 4, 1, logDescription);
+                await _logService.CreateLog(HttpContext, 5, 1, logDescription);
                 return NotFound();
             }
 
-            await _logService.CreateLog(HttpContext, 4, 1, logDescription);
+            await _logService.CreateLog(HttpContext, 5, 1, logDescription);
             var bidList = _context.Bids;
             return Ok(bidList);
         }

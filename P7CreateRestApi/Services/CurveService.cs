@@ -27,11 +27,6 @@ namespace Dot.Net.WebApi.Repositories
             return _curve;
         }
 
-        public async Task<CurvePoint> GetCurveById(int id)
-        {
-            return await _context.CurvePoints.FindAsync(id);
-        }
-
         public async Task<bool> UpdateCurveById(int id, CurvePoint curve)
         {
             var _curve = _context.CurvePoints.Find(id);

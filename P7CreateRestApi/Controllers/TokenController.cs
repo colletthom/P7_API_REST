@@ -11,19 +11,19 @@ namespace Dot.Net.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class LoginController : ControllerBase
+    public class TokenController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
         private readonly IPasswordHasher<User> _passwordHasher;
 
-        public LoginController(UserManager<User> userManager, IConfiguration configuration, IPasswordHasher<User> passwordHasher)
+        public TokenController(UserManager<User> userManager, IConfiguration configuration, IPasswordHasher<User> passwordHasher)
         {
             _userManager = userManager;
             _configuration = configuration;
             _passwordHasher = passwordHasher;
         }
-
+        /*
         [HttpPost]
         [Route("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
@@ -55,7 +55,7 @@ namespace Dot.Net.WebApi.Controllers
             {
                 return BadRequest(result.Errors);
             }
-        }
+        }*/
 
         [HttpPost]
         [Route("GetToken")]

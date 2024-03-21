@@ -26,11 +26,6 @@ namespace Dot.Net.WebApi.Repositories
             return _rating;
         }
 
-        public async Task<Rating> GetRatingById(int id)
-        {
-            return await _context.Ratings.FindAsync(id);
-        }
-
         public async Task<bool> UpdateRatingById(int id, Rating rating)
         {
             var _rating = _context.Ratings.Find(id);

@@ -16,11 +16,13 @@ namespace Dot.Net.WebApi.Controllers
     {
         private readonly LocalDbContext _context;
         private readonly TradeService _tradeRepository;
+        private readonly LogService _logService;
 
-        public TradeController(LocalDbContext context, TradeService tradeRepository)
+        public TradeController(LocalDbContext context, TradeService tradeRepository, LogService logService)
         {
             _context = context;
             _tradeRepository = tradeRepository;
+            _logService = logService;
         }
         // TODO: Inject Trade service
         /*
@@ -45,12 +47,28 @@ namespace Dot.Net.WebApi.Controllers
         [Route("")]
         public async Task<IActionResult> Add([FromBody]Trade trade)
         {
+            string logDescription = "Le AddTrade a réussi";
             if (!ModelState.IsValid)
             {
+                logDescription = "Le AddTrade a échoué Model non valide";
+                await _logService.CreateLog(HttpContext, 1, 5, logDescription);
                 return BadRequest(ModelState);
             }
             var addTrade = await _tradeRepository.AddTrade(trade);
+            await _logService.CreateLog(HttpContext, 1, 5, logDescription);
             return Ok(addTrade);
+        }
+
+        [HttpGet]
+        [Authorize(Policy = "AccessGetAction")]
+        [Route("")]
+        public async Task<IActionResult> GetAll()
+        {
+            var _trade = await _context.Trades.ToListAsync();
+            string logDescription = "Le GetAll a réussi";
+
+            await _logService.CreateLog(HttpContext, 2, 5, logDescription);
+            return Ok(_trade);
         }
 
         [HttpGet]
@@ -59,9 +77,16 @@ namespace Dot.Net.WebApi.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             // TODO: get Trade by Id and to model then show to the form
-            var _trade = await _tradeRepository.GetTradeById(id);
+            var _trade = await _context.Trades.FindAsync(id);
+            string logDescription = "Le GetTradeById a réussi";
             if (_trade == null)
+            {
+                logDescription = "Le GetTradeById a échoué {id} non trouvé";
+                await _logService.CreateLog(HttpContext, 3, 5, logDescription);
                 return NotFound();
+            }
+
+            await _logService.CreateLog(HttpContext, 3, 5, logDescription);
             return Ok(_trade);
         }
 
@@ -71,13 +96,24 @@ namespace Dot.Net.WebApi.Controllers
         public async Task<IActionResult> UpdateById(int id, [FromBody] Trade trade)
         {
             // TODO: check required fields, if valid call service to update Trade and return Trade list
+            string logDescription = "Le UpdateTradeById a réussi";
             if (!ModelState.IsValid)
+            {
+                logDescription = "Le UpdateTradeById a échoué Model non valide";
+                await _logService.CreateLog(HttpContext, 4, 5, logDescription);
                 return BadRequest(ModelState);
+            }
+                
 
             var _trade = await _tradeRepository.UpdateTradeById(id, trade);
             if (!_trade)
+            {
+                logDescription = "Le UpdateTradeById a échoué {id} non trouvé";
+                await _logService.CreateLog(HttpContext, 4, 5, logDescription);
                 return NotFound();
+            }
 
+            await _logService.CreateLog(HttpContext, 4, 5, logDescription);
             var _tradeList = _context.Trades;
             return Ok(_tradeList);
         }
@@ -88,10 +124,16 @@ namespace Dot.Net.WebApi.Controllers
         public async Task<IActionResult> DeleteById(int id)
         {
             // TODO: Find Trade by Id and delete the Trade, return to Trade list
+            string logDescription = "Le DeleteTradeById a réussi";
             var _trade = await _tradeRepository.DeleteTradeById(id);
             if (!_trade)
+            {
+                logDescription = "Le DeleteTradeById a échoué {id} non trouvé";
+                await _logService.CreateLog(HttpContext, 5, 5, logDescription);
                 return NotFound();
+            }
 
+            await _logService.CreateLog(HttpContext, 5, 5, logDescription);
             var _tradeList = _context.Trades;
             return Ok(_tradeList);
         }

@@ -14,11 +14,13 @@ namespace Dot.Net.WebApi.Controllers
     {
         private readonly LocalDbContext _context;
         private readonly CurveService _curveRepository;
+        private readonly LogService _logService;
 
-        public CurveController(LocalDbContext context, CurveService curveRepository )
+        public CurveController(LocalDbContext context, CurveService curveRepository, LogService logService)
         {
             _context = context;
             _curveRepository = curveRepository;
+            _logService = logService;
         }
         // TODO: Inject Curve Point service
 
@@ -48,12 +50,28 @@ namespace Dot.Net.WebApi.Controllers
         [Route("")]
         public async Task<IActionResult> Add([FromBody]CurvePoint curvePoint)
         {
+            string logDescription = "Le AddCurve a réussi";
             if (!ModelState.IsValid)
             {
+                logDescription = "Le AddBid a échoué Model non valide";
+                await _logService.CreateLog(HttpContext, 1, 2, logDescription);
                 return BadRequest(ModelState);
             }
             var addCurve = await _curveRepository.AddCurve(curvePoint);
+            await _logService.CreateLog(HttpContext, 1, 2, logDescription);
             return Ok(addCurve);
+        }
+
+        [HttpGet]
+        [Authorize(Policy = "AccessGetAction")]
+        [Route("")]
+        public async Task<IActionResult> GetAll()
+        {
+            var _curve = await _context.CurvePoints.ToListAsync();
+            string logDescription = "Le GetAll a réussi";
+
+            await _logService.CreateLog(HttpContext, 2, 2, logDescription);
+            return Ok(_curve);
         }
 
         [HttpGet]
@@ -64,9 +82,16 @@ namespace Dot.Net.WebApi.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             // TODO: get CurvePoint by Id and to model then show to the form
-            var _curve = await _curveRepository.GetCurveById(id);
+            var _curve = await _context.CurvePoints.ToListAsync();
+            string logDescription = "Le GetCurveById a réussi";
             if (_curve == null)
+            {
+                logDescription = "Le GetCurveById a échoué {id} non trouvé";
+                await _logService.CreateLog(HttpContext, 3, 2, logDescription);
                 return NotFound();
+            }
+
+            await _logService.CreateLog(HttpContext, 3, 2, logDescription);
             return Ok(_curve);
         }
 
@@ -76,13 +101,23 @@ namespace Dot.Net.WebApi.Controllers
         public async Task<IActionResult> UpdateById(int id, [FromBody] CurvePoint curvePoint)
         {
             // TODO: check required fields, if valid call service to update Curve and return Curve list
+            string logDescription = "Le UpdateCurveById a réussi";
             if (!ModelState.IsValid)
+            {
+                logDescription = "Le UpdateCurveById a échoué Model non valide";
+                await _logService.CreateLog(HttpContext, 4, 2, logDescription);
                 return BadRequest(ModelState);
+            }                
 
             var updateCurve = await _curveRepository.UpdateCurveById(id, curvePoint);
             if (!updateCurve)
+            {
+                logDescription = "Le UpdateCurveById a échoué {id} non trouvé";
+                await _logService.CreateLog(HttpContext, 4, 2, logDescription);
                 return NotFound();
+            }
 
+            await _logService.CreateLog(HttpContext, 4, 2, logDescription);
             var _curveList = _context.CurvePoints;
             return Ok(_curveList);
         }
@@ -94,10 +129,16 @@ namespace Dot.Net.WebApi.Controllers
         public async Task<IActionResult> DeleteById (int id)
         {
             // TODO: Find Curve by Id and delete the Curve, return to Curve list
+            string logDescription = "Le DeleteCurveById a réussi";
             var _curve = await _curveRepository.DeleteCurveById(id);
             if (!_curve)
+            {
+                logDescription = "Le DeleteCurveById a échoué {id} non trouvé";
+                await _logService.CreateLog(HttpContext, 5, 2, logDescription);
                 return NotFound();
+            }
 
+            await _logService.CreateLog(HttpContext, 5, 2, logDescription);
             var _curveList = _context.CurvePoints;
             return Ok(_curveList);
 

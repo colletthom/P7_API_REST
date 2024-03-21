@@ -28,11 +28,6 @@ namespace Dot.Net.WebApi.Repositories
             return _ruleName;
         }
 
-        public async Task<RuleName> GetRuleNameById(int id)
-        {
-            return await _context.RuleNames.FindAsync(id);
-        }
-
         public async Task<bool> UpdateRuleNameById(int id, RuleName ruleName)
         {
             var _ruleName = _context.RuleNames.Find(id);

@@ -4,6 +4,7 @@ using Dot.Net.WebApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using P7CreateRestApi.Models;
 using System.Diagnostics;
 
 namespace Dot.Net.WebApi.Controllers
@@ -14,11 +15,12 @@ namespace Dot.Net.WebApi.Controllers
     {
         private UserService _userRepository;
         private readonly LocalDbContext _context;
-
-        public UserController(UserService userRepository, LocalDbContext context)
+        private readonly LogService _logService;
+        public UserController(UserService userRepository, LocalDbContext context, LogService logService)
         {
             _userRepository = userRepository;
             _context = context;
+            _logService = logService;
         }
         /*
         [HttpGet]
@@ -44,18 +46,33 @@ namespace Dot.Net.WebApi.Controllers
         */
 
         [HttpPost]
-        [Authorize(Policy = "AccessWriteActions")]
         //[Route("add")]
         [Route("")]
-        public async Task<IActionResult> Add([FromBody]User user)
+        public async Task<IActionResult> Add([FromBody]RegisterModel user)
         {
-             if (!ModelState.IsValid)
+            string logDescription = "Le AddUser a réussi";
+            if (!ModelState.IsValid)
              {
-                 return BadRequest(ModelState);
+                logDescription = "Le AddUser a échoué Model non valide";
+                await _logService.CreateLog(HttpContext, 1, 6, logDescription);
+                return BadRequest(ModelState);
              }
 
             var addUser = await _userRepository.AddUser(user);
+            await _logService.CreateLog(HttpContext, 1, 6, logDescription);
             return Ok(addUser); 
+        }
+
+        [HttpGet]
+        [Authorize(Policy = "AccessWriteActions")]
+        [Route("")]
+        public async Task<IActionResult> GetAll()
+        {
+            var _user = await _context.Users.ToListAsync();
+            string logDescription = "Le GetAll a réussi";
+
+            await _logService.CreateLog(HttpContext, 2, 6, logDescription);
+            return Ok(_user);
         }
 
         [HttpGet]
@@ -63,11 +80,17 @@ namespace Dot.Net.WebApi.Controllers
         [Route("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var user = await _userRepository.GetUserById(id);
-            
-            if (user == null)
-                return NotFound();
+            var user = await _context.Users.FindAsync(id);
+            string logDescription = "Le GetUserById a réussi";
 
+            if (user == null)
+            {
+                logDescription = "Le GetUserById a échoué {id} non trouvé";
+                await _logService.CreateLog(HttpContext, 3, 6, logDescription);
+                return NotFound();
+            }
+
+            await _logService.CreateLog(HttpContext, 3, 6, logDescription);
             return Ok(user);
         }
 
@@ -77,13 +100,23 @@ namespace Dot.Net.WebApi.Controllers
         public async Task<IActionResult> UpdateUserById(int id, [FromBody] User user)
         {
             // TODO: check required fields, if valid call service to update Trade and return Trade list
+            string logDescription = "Le UpdateUserById a réussi";
             if (!ModelState.IsValid)
+            {
+                logDescription = "Le UpdateUserById a échoué Model non valide";
+                await _logService.CreateLog(HttpContext, 4, 6, logDescription);
                 return BadRequest(ModelState);
+            }                
 
             var _user = await _userRepository.UpdateUserById(id, user);
             if (!_user)
+            {
+                logDescription = "Le UpdateUserById a échoué {id} non trouvé";
+                await _logService.CreateLog(HttpContext, 4, 6, logDescription);
                 return NotFound();
+            }
 
+            await _logService.CreateLog(HttpContext, 4, 6, logDescription);
             var _userList = _context.Users;
             return Ok(_userList);
         }
@@ -93,11 +126,17 @@ namespace Dot.Net.WebApi.Controllers
         [Route("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
+            string logDescription = "Le DeleteUserById a réussi";
             var user = await _userRepository.DeleteUserById(id);
             
             if (user == null)
+            {
+                logDescription = "Le DeleteUserById a échoué {id} non trouvé";
+                await _logService.CreateLog(HttpContext, 5, 6, logDescription);
                 return NotFound();
+            }
 
+            await _logService.CreateLog(HttpContext, 5, 6, logDescription);
             var _userList = _context.Users;
             return Ok(_userList);
         }

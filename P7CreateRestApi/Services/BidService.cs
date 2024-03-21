@@ -43,11 +43,6 @@ namespace Dot.Net.WebApi.Repositories
             return _bid;
         }
 
-        public async Task<Bid> GetBidById(int id)
-        {
-            return await _context.Bids.FindAsync(id);
-        }
-
         public async Task<bool> UpdateBid(int id, Bid bid)
         {
             var _bid = _context.Bids.Find(id);

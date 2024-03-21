@@ -41,11 +41,6 @@ namespace Dot.Net.WebApi.Repositories
             return _trade;
         }
 
-        public async Task<Trade> GetTradeById(int id)
-        {
-            return await _context.Trades.FindAsync(id);
-        }
-
         public async Task<bool> UpdateTradeById(int id, Trade trade)
         {
             var _trade = _context.Trades.Find(id);
