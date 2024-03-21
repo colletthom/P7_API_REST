@@ -13,9 +13,9 @@ namespace Dot.Net.WebApi.Controllers
     public class CurveController : ControllerBase
     {
         private readonly LocalDbContext _context;
-        private readonly CurveRepository _curveRepository;
+        private readonly CurveService _curveRepository;
 
-        public CurveController(LocalDbContext context, CurveRepository curveRepository )
+        public CurveController(LocalDbContext context, CurveService curveRepository )
         {
             _context = context;
             _curveRepository = curveRepository;
@@ -57,7 +57,7 @@ namespace Dot.Net.WebApi.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = "AccessGetAction,AccessWriteActions")]
+        [Authorize(Policy = "AccessGetAction")]
         //[Route("update/{id}")]
         [Route("{id}")]
         //public IActionResult ShowUpdateForm(int id)

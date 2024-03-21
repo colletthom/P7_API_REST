@@ -22,11 +22,11 @@ internal class Program
 
         // Add services to the container.
         builder.Services.AddScoped<BidRepository>();
-        builder.Services.AddScoped<CurveRepository>();
-        builder.Services.AddScoped<RatingRepository>();
-        builder.Services.AddScoped<RuleNameRepository>();
-        builder.Services.AddScoped<TradeRepository>();
-        builder.Services.AddScoped<UserRepository>();
+        builder.Services.AddScoped<CurveService>();
+        builder.Services.AddScoped<RatingService>();
+        builder.Services.AddScoped<RuleNameService>();
+        builder.Services.AddScoped<TradeService>();
+        builder.Services.AddScoped<UserService>();
         builder.Services.AddScoped<UserManager<User>>();
         builder.Services.AddScoped<LogService>();
 

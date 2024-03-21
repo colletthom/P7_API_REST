@@ -6,12 +6,12 @@ using System.Data;
 
 namespace Dot.Net.WebApi.Repositories
 {
-    public class UserRepository
+    public class UserService
     {
         public LocalDbContext _context { get; }
         private readonly UserManager<User> _userManager;
 
-        public UserRepository(LocalDbContext context, UserManager<User> userManager)
+        public UserService(LocalDbContext context, UserManager<User> userManager)
         {
             _context = context;
             _userManager = userManager;

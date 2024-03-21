@@ -13,9 +13,9 @@ namespace Dot.Net.WebApi.Controllers
     public class RatingController : ControllerBase
     {
         private readonly LocalDbContext _context;
-        private readonly RatingRepository _ratingRepository;
+        private readonly RatingService _ratingRepository;
 
-        public RatingController(LocalDbContext context, RatingRepository ratingRepository)
+        public RatingController(LocalDbContext context, RatingService ratingRepository)
         {
             _context = context;
             _ratingRepository = ratingRepository;
@@ -52,7 +52,7 @@ namespace Dot.Net.WebApi.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = "AccessGetAction,AccessWriteActions")]
+        [Authorize(Policy = "AccessGetAction")]
         [Route("{id}")]
         public async Task<IActionResult> GetById(int id)
         {

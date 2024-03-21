@@ -3,11 +3,11 @@ using Dot.Net.WebApi.Domain;
 
 namespace Dot.Net.WebApi.Repositories
 { 
-    public class RuleNameRepository
+    public class RuleNameService
     {
         private LocalDbContext _context { get; }
 
-        public RuleNameRepository(LocalDbContext context)
+        public RuleNameService(LocalDbContext context)
         {
             _context = context;
         }

@@ -3,11 +3,11 @@ using Dot.Net.WebApi.Domain;
 
 namespace Dot.Net.WebApi.Repositories
 {
-    public class TradeRepository
+    public class TradeService
     {
         private LocalDbContext _context { get; }
 
-        public TradeRepository(LocalDbContext context)
+        public TradeService(LocalDbContext context)
         {
             _context = context;
         }

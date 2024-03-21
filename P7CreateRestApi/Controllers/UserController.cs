@@ -12,10 +12,10 @@ namespace Dot.Net.WebApi.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private UserRepository _userRepository;
+        private UserService _userRepository;
         private readonly LocalDbContext _context;
 
-        public UserController(UserRepository userRepository, LocalDbContext context)
+        public UserController(UserService userRepository, LocalDbContext context)
         {
             _userRepository = userRepository;
             _context = context;

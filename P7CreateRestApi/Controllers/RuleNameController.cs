@@ -12,9 +12,9 @@ namespace Dot.Net.WebApi.Controllers
     public class RuleNameController : ControllerBase
     {
         private readonly LocalDbContext _context;
-        private readonly RuleNameRepository _ruleNameRepository;
+        private readonly RuleNameService _ruleNameRepository;
 
-        public RuleNameController(LocalDbContext context, RuleNameRepository ruleNameRepository)
+        public RuleNameController(LocalDbContext context, RuleNameService ruleNameRepository)
         {
             _context = context;
             _ruleNameRepository = ruleNameRepository;
@@ -51,7 +51,7 @@ namespace Dot.Net.WebApi.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = "AccessGetAction,AccessWriteActions")]
+        [Authorize(Policy = "AccessGetAction")]
         [Route("{id}")]
         public async Task<IActionResult> GetById(int id)
         {

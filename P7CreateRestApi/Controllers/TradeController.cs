@@ -15,9 +15,9 @@ namespace Dot.Net.WebApi.Controllers
     public class TradeController : ControllerBase
     {
         private readonly LocalDbContext _context;
-        private readonly TradeRepository _tradeRepository;
+        private readonly TradeService _tradeRepository;
 
-        public TradeController(LocalDbContext context, TradeRepository tradeRepository)
+        public TradeController(LocalDbContext context, TradeService tradeRepository)
         {
             _context = context;
             _tradeRepository = tradeRepository;
@@ -54,7 +54,7 @@ namespace Dot.Net.WebApi.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = "AccessGetAction,AccessWriteActions")]
+        [Authorize(Policy = "AccessGetAction")]
         [Route("{id}")]
         public async Task<IActionResult> GetById(int id)
         {

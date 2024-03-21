@@ -3,11 +3,11 @@ using Dot.Net.WebApi.Domain;
 
 namespace Dot.Net.WebApi.Repositories
 {
-    public class CurveRepository
+    public class CurveService
     {
         private LocalDbContext _context { get; }
 
-        public CurveRepository(LocalDbContext context)
+        public CurveService(LocalDbContext context)
         {
             _context = context;
         }

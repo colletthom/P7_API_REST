@@ -3,11 +3,11 @@ using Dot.Net.WebApi.Domain;
 
 namespace Dot.Net.WebApi.Repositories
 {
-    public class RatingRepository
+    public class RatingService
     {
         private LocalDbContext _context { get; }
 
-        public RatingRepository(LocalDbContext context)
+        public RatingService(LocalDbContext context)
         {
             _context = context;
         }
