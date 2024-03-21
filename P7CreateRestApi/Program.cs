@@ -30,7 +30,6 @@ internal class Program
         builder.Services.AddScoped<UserManager<User>>();
         builder.Services.AddScoped<LogService>();
 
-
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();

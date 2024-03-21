@@ -3,14 +3,7 @@ using Dot.Net.WebApi.Domain;
 using Dot.Net.WebApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-/*using Microsoft.CodeAnalysis;
-using Microsoft.IdentityModel.JsonWebTokens;
-using Newtonsoft.Json.Linq;
-using System.Diagnostics;
-using System.Drawing;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;*/
+
 
 namespace Dot.Net.WebApi.Controllers
 {
