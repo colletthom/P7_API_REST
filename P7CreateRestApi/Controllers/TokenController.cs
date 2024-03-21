@@ -1,4 +1,5 @@
 using Dot.Net.WebApi.Domain;
+using Dot.Net.WebApi.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -16,12 +17,14 @@ namespace Dot.Net.WebApi.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
         private readonly IPasswordHasher<User> _passwordHasher;
+        private readonly LogService _logService;
 
-        public TokenController(UserManager<User> userManager, IConfiguration configuration, IPasswordHasher<User> passwordHasher)
+        public TokenController(UserManager<User> userManager, IConfiguration configuration, IPasswordHasher<User> passwordHasher, LogService logService)
         {
             _userManager = userManager;
             _configuration = configuration;
             _passwordHasher = passwordHasher;
+            _logService = logService;
         }
         /*
         [HttpPost]
@@ -63,15 +66,18 @@ namespace Dot.Net.WebApi.Controllers
         {
             // Vérifie les informations d'identification de l'utilisateur
             var user = await _userManager.FindByNameAsync(model.UserName);
+            string logDescription = "La création de Token a échouée";
 
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
                 // Générer le token JWT
                 var token = GenerateJwtToken(user);
+                logDescription = "La création de Token a réussie";
+                await _logService.CreateLog(HttpContext, 1, 7, logDescription);
 
                 return Ok(new { Token = token });
             }
-
+            await _logService.CreateLog(HttpContext, 1, 7, logDescription);
             return Unauthorized();
         }
 

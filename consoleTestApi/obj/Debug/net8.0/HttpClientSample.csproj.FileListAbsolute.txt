@@ -1,0 +1,10 @@
+C:\Users\A115TW\source\repos\P7_API_REST\consoleTestApi\bin\Debug\net8.0\HttpClientSample.exe
+C:\Users\A115TW\source\repos\P7_API_REST\consoleTestApi\bin\Debug\net8.0\HttpClientSample.dll
+C:\Users\A115TW\source\repos\P7_API_REST\consoleTestApi\obj\Debug\net8.0\HttpClientSample.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\A115TW\source\repos\P7_API_REST\consoleTestApi\obj\Debug\net8.0\HttpClientSample.AssemblyInfoInputs.cache
+C:\Users\A115TW\source\repos\P7_API_REST\consoleTestApi\obj\Debug\net8.0\HttpClientSample.AssemblyInfo.cs
+C:\Users\A115TW\source\repos\P7_API_REST\consoleTestApi\obj\Debug\net8.0\HttpClientSample.csproj.CoreCompileInputs.cache
+C:\Users\A115TW\source\repos\P7_API_REST\consoleTestApi\obj\Debug\net8.0\HttpClientSample.sourcelink.json
+C:\Users\A115TW\source\repos\P7_API_REST\consoleTestApi\obj\Debug\net8.0\HttpClientSample.dll
+C:\Users\A115TW\source\repos\P7_API_REST\consoleTestApi\obj\Debug\net8.0\refint\HttpClientSample.dll
+C:\Users\A115TW\source\repos\P7_API_REST\consoleTestApi\obj\Debug\net8.0\HttpClientSample.pdb

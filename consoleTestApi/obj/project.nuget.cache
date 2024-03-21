@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "x/uyyCQfhHzik1N8m6b3yRyTizcbPrdnG7XgWsa/geNLk8iSF5o91QBEDl2ub+6hKeGoZMMQ6YCak8VdVyL5zw==",
+  "dgSpecHash": "1jA8vo3cHcwdaFS3gBvOz4C4nooxnaj4VW22vw0/gtUnG+63JjtoHb/50qY3WsCeBzKin9/i3U+5fmjNVFA1VA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\A115TW\\source\\repos\\P7_API_REST\\consoleTestApi\\consoleTestApi.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\A115TW\\source\\repos\\P7_API_REST\\consoleTestApi\\HttpClientSample.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\A115TW\\.nuget\\packages\\system.net.http.json\\8.0.0\\system.net.http.json.8.0.0.nupkg.sha512",
+    "C:\\Users\\A115TW\\.nuget\\packages\\system.text.encodings.web\\8.0.0\\system.text.encodings.web.8.0.0.nupkg.sha512",
+    "C:\\Users\\A115TW\\.nuget\\packages\\system.text.json\\8.0.0\\system.text.json.8.0.0.nupkg.sha512"
+  ],
   "logs": []
 }
