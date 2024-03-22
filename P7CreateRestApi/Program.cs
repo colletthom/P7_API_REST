@@ -87,6 +87,9 @@ internal class Program
         {
             options.Password.RequireDigit = true;
             options.Password.RequireLowercase = true;
+            options.Password.RequireUppercase = true;
+            options.Password.RequireNonAlphanumeric = true;
+            options.Password.RequiredLength = 6;
             options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
         })
                   .AddEntityFrameworkStores<LocalDbContext>()

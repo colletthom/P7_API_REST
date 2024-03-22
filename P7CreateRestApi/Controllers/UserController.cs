@@ -13,7 +13,7 @@ namespace Dot.Net.WebApi.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private UserService _userRepository;
+        private readonly UserService _userRepository;
         private readonly LocalDbContext _context;
         private readonly LogService _logService;
         public UserController(UserService userRepository, LocalDbContext context, LogService logService)
@@ -59,8 +59,16 @@ namespace Dot.Net.WebApi.Controllers
              }
 
             var addUser = await _userRepository.AddUser(user);
-            await _logService.CreateLog(HttpContext, 1, 6, logDescription);
-            return Ok(addUser); 
+            
+            if (addUser is User) 
+            {
+                await _logService.CreateLog(HttpContext, 1, 6, logDescription);
+                return Ok(addUser);
+            }
+            else
+            {
+                return BadRequest(addUser);
+            }
         }
 
         [HttpGet]
@@ -97,7 +105,7 @@ namespace Dot.Net.WebApi.Controllers
         [HttpPut]
         [Authorize(Policy = "AccessWriteActions")]
         [Route("{id}")]
-        public async Task<IActionResult> UpdateUserById(int id, [FromBody] User user)
+        public async Task<IActionResult> UpdateUserById(int id, [FromBody] UpdateModel user)
         {
             // TODO: check required fields, if valid call service to update Trade and return Trade list
             string logDescription = "Le UpdateUserById a réussi";
@@ -109,16 +117,19 @@ namespace Dot.Net.WebApi.Controllers
             }                
 
             var _user = await _userRepository.UpdateUserById(id, user);
-            if (!_user)
-            {
-                logDescription = "Le UpdateUserById a échoué {id} non trouvé";
-                await _logService.CreateLog(HttpContext, 4, 6, logDescription);
-                return NotFound();
-            }
 
-            await _logService.CreateLog(HttpContext, 4, 6, logDescription);
-            var _userList = _context.Users;
-            return Ok(_userList);
+            if (_user is User)
+            {
+                await _logService.CreateLog(HttpContext, 4, 6, logDescription);
+                var _userList = _context.Users;
+                return Ok(_userList);
+            }
+            else
+            {
+                logDescription = "Le UpdateUserById a échoué";
+                await _logService.CreateLog(HttpContext, 4, 6, logDescription);
+                return BadRequest(_user);
+            }
         }
 
         [HttpDelete]

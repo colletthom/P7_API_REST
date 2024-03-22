@@ -26,7 +26,7 @@ namespace Dot.Net.WebApi.Repositories
                                   .FirstOrDefault();
         }
 
-        public async Task<User> AddUser(RegisterModel model)
+        public async Task<Object> AddUser(RegisterModel model)
         {
 
             // Création du compte utilisateur
@@ -38,30 +38,54 @@ namespace Dot.Net.WebApi.Repositories
             };
             var passwordHash = _passwordHasher.HashPassword(user, model.Password);
             user.PasswordHash = passwordHash;
+            var result = await _userManager.CreateAsync(user, model.Password);
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-            return user;
+            if (result.Succeeded)
+            {
+                return user;
+            }
+            else
+            {
+                return new { Errors = result.Errors };
+            }
         }
 
-        public async Task<bool> UpdateUserById(int id, User user)
+        public async Task<object> UpdateUserById(int id, UpdateModel user)
         {
+            var existingUser = await _context.Users.FindAsync(id);
 
-            var _user = _context.Users.Find(id);
-
-            if (_user != null)
+            if (existingUser == null)
             {
-                _user.FullName = user.FullName; 
-                _user.Role = user.Role;
-                _user.UserName = user.UserName;
-                _user.PasswordHash = user.PasswordHash;
-
-                var result = await _userManager.UpdateAsync(_user);
+                return false;
             }
 
+            existingUser.FullName = user.FullName;
+            existingUser.Role = user.Role;
+            existingUser.UserName = user.UserName;
 
-                await _context.SaveChangesAsync();
-            return true;
+            if (!string.IsNullOrEmpty(user.Password))
+            {
+                var newPasswordHash = _passwordHasher.HashPassword(existingUser, user.Password);
+                existingUser.PasswordHash = newPasswordHash;
+            }
+
+            if (!string.IsNullOrEmpty(user.Password))
+            {
+                var token = await _userManager.GeneratePasswordResetTokenAsync(existingUser);
+                var result = await _userManager.ResetPasswordAsync(existingUser, token, user.Password);
+                if (!result.Succeeded)
+                {
+                    return new { Errors = result.Errors };
+                }
+            }
+            var updateResult = await _userManager.UpdateAsync(existingUser);
+
+            if (!updateResult.Succeeded)
+            {
+                return new { Errors = updateResult.Errors };
+            }
+
+            return existingUser;
         }
 
         public async Task<bool> DeleteUserById(int id)
