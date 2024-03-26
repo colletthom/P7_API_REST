@@ -23,6 +23,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NuGet.Common;
 
 namespace P7CreateRestApiMSTEST
 {
@@ -39,11 +40,11 @@ namespace P7CreateRestApiMSTEST
         {
             var services = new ServiceCollection();
 
-            // Ajoutez les services nécessaires au conteneur, y compris IHttpClientFactory si nécessaire
+            // J'ajoute les services nécessaires au conteneur, y compris IHttpClientFactory si nécessaire
             services.AddHttpClient();
-            // Ajoutez d'autres services nécessaires au conteneur
+            // J'ajoute d'autres services nécessaires au conteneur
 
-            // Ajoutez la configuration à partir de appsettings.json
+            // J'ajoute la configuration à partir de appsettings.json
             var configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .Build();
@@ -52,13 +53,42 @@ namespace P7CreateRestApiMSTEST
             _serviceProvider = services.BuildServiceProvider();
         }
 
-         [TestMethod]
+        private async Task<string> GetValidToken()
+        {
+            var _client = _serviceProvider.GetRequiredService<HttpClient>();
+
+            LoginModel loginModel = new LoginModel
+            {
+                UserName = "test5",
+                Password = "P@ssword123"
+            };
+
+            // J'utilise HttpClient pour envoyer une requête POST à mon API pour obtenir un jeton
+            _client.BaseAddress = new Uri("https://localhost:7210");
+            var response = await _client.PostAsJsonAsync("/token/GetToken", loginModel);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var tokenObject = JObject.Parse(responseContent);
+                var token = tokenObject["token"]?.ToString();
+                return token;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+
+        [TestMethod]
         [Description("...")]
         //public async Task BidControllerTest()
-        public void BidControllerTest()
+        public async Task BidControllerTest()
         {
-            Assert.Fail("test");
-            /*
+            //Assert.Fail("test");
+            var _clientFactory = _serviceProvider.GetRequiredService<IHttpClientFactory>();
+            var configuration = _serviceProvider.GetRequiredService<IConfiguration>();
+
             // Arrange
             var newBid = new Bid
             {
@@ -85,7 +115,9 @@ namespace P7CreateRestApiMSTEST
                 SourceListId = "Test intégration",
                 Side = "Test intégration"
             };
-            */
+
+
+
             /*// Récupérer la chaîne de connexion depuis appsettings.json
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
 
@@ -93,18 +125,22 @@ namespace P7CreateRestApiMSTEST
             var options = new DbContextOptionsBuilder<LocalDbContext>()
                 .UseSqlServer(connectionString)
                 .Options;*/
-            /*
+
             var client = _clientFactory.CreateClient(); // Création d'une instance d'objet HttpClient
             client.BaseAddress = new Uri("https://localhost:7210");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            //récupération du Token
+            var token = await GetValidToken(); // Récupérer le jeton d'authentification
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             // Act
             var response = await client.PostAsJsonAsync("/api/Bid", newBid);
 
             // Assert
             response.EnsureSuccessStatusCode();
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);*/
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
     }
 }

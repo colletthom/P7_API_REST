@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<coverage line-rate="0.0044" branch-rate="0" version="1.9" timestamp="1711461440" lines-covered="11" lines-valid="2484" branches-covered="0" branches-valid="812">
+<coverage line-rate="0.0342" branch-rate="0.0024" version="1.9" timestamp="1711464183" lines-covered="87" lines-valid="2537" branches-covered="2" branches-valid="816">
   <sources>
     <source>C:\Users\A115TW\</source>
   </sources>
   <packages>
-    <package name="P7CreateRestApi" line-rate="0" branch-rate="0" complexity="1087">
+    <package name="P7CreateRestApi" line-rate="0.0097" branch-rate="0" complexity="1087">
       <classes>
         <class name="Program" filename="source\repos\P7_API_REST\P7CreateRestApi\Program.cs" line-rate="0" branch-rate="0" complexity="2">
           <methods>
@@ -4338,142 +4338,142 @@
             <line number="89" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Dot.Net.WebApi.Domain.Bid" filename="source\repos\P7_API_REST\P7CreateRestApi\Domain\Bid.cs" line-rate="0" branch-rate="1" complexity="22">
+        <class name="Dot.Net.WebApi.Domain.Bid" filename="source\repos\P7_API_REST\P7CreateRestApi\Domain\Bid.cs" line-rate="1" branch-rate="1" complexity="22">
           <methods>
-            <method name="get_BidId" signature="()" line-rate="0" branch-rate="1" complexity="1">
+            <method name="get_BidId" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="8" hits="0" branch="False" />
+                <line number="8" hits="1" branch="False" />
               </lines>
             </method>
-            <method name="get_Account" signature="()" line-rate="0" branch-rate="1" complexity="1">
+            <method name="get_Account" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="11" hits="0" branch="False" />
+                <line number="11" hits="2" branch="False" />
               </lines>
             </method>
-            <method name="get_BidType" signature="()" line-rate="0" branch-rate="1" complexity="1">
+            <method name="get_BidType" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="14" hits="0" branch="False" />
+                <line number="14" hits="2" branch="False" />
               </lines>
             </method>
-            <method name="get_BidQuantity" signature="()" line-rate="0" branch-rate="1" complexity="1">
+            <method name="get_BidQuantity" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="16" hits="0" branch="False" />
+                <line number="16" hits="2" branch="False" />
               </lines>
             </method>
-            <method name="get_AskQuantity" signature="()" line-rate="0" branch-rate="1" complexity="1">
+            <method name="get_AskQuantity" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="18" hits="0" branch="False" />
+                <line number="18" hits="2" branch="False" />
               </lines>
             </method>
-            <method name="get_Bid2" signature="()" line-rate="0" branch-rate="1" complexity="1">
+            <method name="get_Bid2" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="20" hits="0" branch="False" />
+                <line number="20" hits="2" branch="False" />
               </lines>
             </method>
-            <method name="get_Ask" signature="()" line-rate="0" branch-rate="1" complexity="1">
+            <method name="get_Ask" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="22" hits="0" branch="False" />
+                <line number="22" hits="2" branch="False" />
               </lines>
             </method>
-            <method name="get_Benchmark" signature="()" line-rate="0" branch-rate="1" complexity="1">
+            <method name="get_Benchmark" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="25" hits="0" branch="False" />
+                <line number="25" hits="2" branch="False" />
               </lines>
             </method>
-            <method name="get_BidListDate" signature="()" line-rate="0" branch-rate="1" complexity="1">
+            <method name="get_BidListDate" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="27" hits="0" branch="False" />
+                <line number="27" hits="2" branch="False" />
               </lines>
             </method>
-            <method name="get_Commentary" signature="()" line-rate="0" branch-rate="1" complexity="1">
+            <method name="get_Commentary" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="30" hits="0" branch="False" />
+                <line number="30" hits="2" branch="False" />
               </lines>
             </method>
-            <method name="get_BidSecurity" signature="()" line-rate="0" branch-rate="1" complexity="1">
+            <method name="get_BidSecurity" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="33" hits="0" branch="False" />
+                <line number="33" hits="2" branch="False" />
               </lines>
             </method>
-            <method name="get_BidStatus" signature="()" line-rate="0" branch-rate="1" complexity="1">
+            <method name="get_BidStatus" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="36" hits="0" branch="False" />
+                <line number="36" hits="2" branch="False" />
               </lines>
             </method>
-            <method name="get_Trader" signature="()" line-rate="0" branch-rate="1" complexity="1">
+            <method name="get_Trader" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="39" hits="0" branch="False" />
+                <line number="39" hits="2" branch="False" />
               </lines>
             </method>
-            <method name="get_Book" signature="()" line-rate="0" branch-rate="1" complexity="1">
+            <method name="get_Book" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="42" hits="0" branch="False" />
+                <line number="42" hits="2" branch="False" />
               </lines>
             </method>
-            <method name="get_CreationName" signature="()" line-rate="0" branch-rate="1" complexity="1">
+            <method name="get_CreationName" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="45" hits="0" branch="False" />
+                <line number="45" hits="2" branch="False" />
               </lines>
             </method>
-            <method name="get_CreationDate" signature="()" line-rate="0" branch-rate="1" complexity="1">
+            <method name="get_CreationDate" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="47" hits="0" branch="False" />
+                <line number="47" hits="2" branch="False" />
               </lines>
             </method>
-            <method name="get_RevisionName" signature="()" line-rate="0" branch-rate="1" complexity="1">
+            <method name="get_RevisionName" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="50" hits="0" branch="False" />
+                <line number="50" hits="2" branch="False" />
               </lines>
             </method>
-            <method name="get_RevisionDate" signature="()" line-rate="0" branch-rate="1" complexity="1">
+            <method name="get_RevisionDate" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="52" hits="0" branch="False" />
+                <line number="52" hits="2" branch="False" />
               </lines>
             </method>
-            <method name="get_DealName" signature="()" line-rate="0" branch-rate="1" complexity="1">
+            <method name="get_DealName" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="55" hits="0" branch="False" />
+                <line number="55" hits="2" branch="False" />
               </lines>
             </method>
-            <method name="get_DealType" signature="()" line-rate="0" branch-rate="1" complexity="1">
+            <method name="get_DealType" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="58" hits="0" branch="False" />
+                <line number="58" hits="2" branch="False" />
               </lines>
             </method>
-            <method name="get_SourceListId" signature="()" line-rate="0" branch-rate="1" complexity="1">
+            <method name="get_SourceListId" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="61" hits="0" branch="False" />
+                <line number="61" hits="2" branch="False" />
               </lines>
             </method>
-            <method name="get_Side" signature="()" line-rate="0" branch-rate="1" complexity="1">
+            <method name="get_Side" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="64" hits="0" branch="False" />
+                <line number="64" hits="2" branch="False" />
               </lines>
             </method>
           </methods>
           <lines>
-            <line number="8" hits="0" branch="False" />
-            <line number="11" hits="0" branch="False" />
-            <line number="14" hits="0" branch="False" />
-            <line number="16" hits="0" branch="False" />
-            <line number="18" hits="0" branch="False" />
-            <line number="20" hits="0" branch="False" />
-            <line number="22" hits="0" branch="False" />
-            <line number="25" hits="0" branch="False" />
-            <line number="27" hits="0" branch="False" />
-            <line number="30" hits="0" branch="False" />
-            <line number="33" hits="0" branch="False" />
-            <line number="36" hits="0" branch="False" />
-            <line number="39" hits="0" branch="False" />
-            <line number="42" hits="0" branch="False" />
-            <line number="45" hits="0" branch="False" />
-            <line number="47" hits="0" branch="False" />
-            <line number="50" hits="0" branch="False" />
-            <line number="52" hits="0" branch="False" />
-            <line number="55" hits="0" branch="False" />
-            <line number="58" hits="0" branch="False" />
-            <line number="61" hits="0" branch="False" />
-            <line number="64" hits="0" branch="False" />
+            <line number="8" hits="1" branch="False" />
+            <line number="11" hits="2" branch="False" />
+            <line number="14" hits="2" branch="False" />
+            <line number="16" hits="2" branch="False" />
+            <line number="18" hits="2" branch="False" />
+            <line number="20" hits="2" branch="False" />
+            <line number="22" hits="2" branch="False" />
+            <line number="25" hits="2" branch="False" />
+            <line number="27" hits="2" branch="False" />
+            <line number="30" hits="2" branch="False" />
+            <line number="33" hits="2" branch="False" />
+            <line number="36" hits="2" branch="False" />
+            <line number="39" hits="2" branch="False" />
+            <line number="42" hits="2" branch="False" />
+            <line number="45" hits="2" branch="False" />
+            <line number="47" hits="2" branch="False" />
+            <line number="50" hits="2" branch="False" />
+            <line number="52" hits="2" branch="False" />
+            <line number="55" hits="2" branch="False" />
+            <line number="58" hits="2" branch="False" />
+            <line number="61" hits="2" branch="False" />
+            <line number="64" hits="2" branch="False" />
           </lines>
         </class>
         <class name="Dot.Net.WebApi.Domain.CurvePoint" filename="source\repos\P7_API_REST\P7CreateRestApi\Domain\CurvePoint.cs" line-rate="0" branch-rate="1" complexity="6">
@@ -6334,22 +6334,22 @@
             <line number="133" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="P7CreateRestApi.Models.LoginModel" filename="source\repos\P7_API_REST\P7CreateRestApi\Models\LoginModel.cs" line-rate="0" branch-rate="1" complexity="2">
+        <class name="P7CreateRestApi.Models.LoginModel" filename="source\repos\P7_API_REST\P7CreateRestApi\Models\LoginModel.cs" line-rate="1" branch-rate="1" complexity="2">
           <methods>
-            <method name="get_UserName" signature="()" line-rate="0" branch-rate="1" complexity="1">
+            <method name="get_UserName" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="6" hits="0" branch="False" />
+                <line number="6" hits="2" branch="False" />
               </lines>
             </method>
-            <method name="get_Password" signature="()" line-rate="0" branch-rate="1" complexity="1">
+            <method name="get_Password" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="7" hits="0" branch="False" />
+                <line number="7" hits="2" branch="False" />
               </lines>
             </method>
           </methods>
           <lines>
-            <line number="6" hits="0" branch="False" />
-            <line number="7" hits="0" branch="False" />
+            <line number="6" hits="2" branch="False" />
+            <line number="7" hits="2" branch="False" />
           </lines>
         </class>
         <class name="P7CreateRestApi.Models.RegisterModel" filename="source\repos\P7_API_REST\P7CreateRestApi\Models\RegisterModel.cs" line-rate="0" branch-rate="1" complexity="3">
@@ -11062,7 +11062,7 @@
         </class>
       </classes>
     </package>
-    <package name="P7CreateRestApiMSTEST" line-rate="0.8461" branch-rate="1" complexity="3">
+    <package name="P7CreateRestApiMSTEST" line-rate="0.9545" branch-rate="0.5" complexity="7">
       <classes>
         <class name="AutoGeneratedProgram" filename=".nuget\packages\microsoft.net.test.sdk\17.6.0\build\netcoreapp3.1\Microsoft.NET.Test.Sdk.Program.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
@@ -11076,42 +11076,180 @@
             <line number="4" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="P7CreateRestApiMSTEST.BidControllerIntegrationTests" filename="source\repos\P7_API_REST\P7CreateRestApiMSTEST\BidControllerIntegrationTests.cs" line-rate="0.9166" branch-rate="1" complexity="2">
+        <class name="P7CreateRestApiMSTEST.BidControllerIntegrationTests" filename="source\repos\P7_API_REST\P7CreateRestApiMSTEST\BidControllerIntegrationTests.cs" line-rate="1" branch-rate="1" complexity="1">
           <methods>
             <method name="Setup" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="39" hits="1" branch="False" />
                 <line number="40" hits="1" branch="False" />
-                <line number="43" hits="1" branch="False" />
-                <line number="47" hits="1" branch="False" />
+                <line number="41" hits="1" branch="False" />
+                <line number="44" hits="1" branch="False" />
                 <line number="48" hits="1" branch="False" />
                 <line number="49" hits="1" branch="False" />
                 <line number="50" hits="1" branch="False" />
-                <line number="52" hits="1" branch="False" />
+                <line number="51" hits="1" branch="False" />
                 <line number="53" hits="1" branch="False" />
-              </lines>
-            </method>
-            <method name="BidControllerTest" signature="()" line-rate="0.6666" branch-rate="1" complexity="1">
-              <lines>
-                <line number="72" hits="1" branch="False" />
-                <line number="73" hits="1" branch="False" />
-                <line number="121" hits="0" branch="False" />
+                <line number="54" hits="1" branch="False" />
               </lines>
             </method>
           </methods>
           <lines>
-            <line number="39" hits="1" branch="False" />
             <line number="40" hits="1" branch="False" />
-            <line number="43" hits="1" branch="False" />
-            <line number="47" hits="1" branch="False" />
+            <line number="41" hits="1" branch="False" />
+            <line number="44" hits="1" branch="False" />
             <line number="48" hits="1" branch="False" />
             <line number="49" hits="1" branch="False" />
             <line number="50" hits="1" branch="False" />
-            <line number="52" hits="1" branch="False" />
+            <line number="51" hits="1" branch="False" />
             <line number="53" hits="1" branch="False" />
+            <line number="54" hits="1" branch="False" />
+          </lines>
+        </class>
+        <class name="P7CreateRestApiMSTEST.BidControllerIntegrationTests/&lt;BidControllerTest&gt;d__3" filename="source\repos\P7_API_REST\P7CreateRestApiMSTEST\BidControllerIntegrationTests.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="87" hits="1" branch="False" />
+                <line number="89" hits="1" branch="False" />
+                <line number="90" hits="1" branch="False" />
+                <line number="93" hits="1" branch="False" />
+                <line number="94" hits="1" branch="False" />
+                <line number="95" hits="1" branch="False" />
+                <line number="96" hits="1" branch="False" />
+                <line number="97" hits="1" branch="False" />
+                <line number="98" hits="1" branch="False" />
+                <line number="99" hits="1" branch="False" />
+                <line number="100" hits="1" branch="False" />
+                <line number="101" hits="1" branch="False" />
+                <line number="102" hits="1" branch="False" />
+                <line number="103" hits="1" branch="False" />
+                <line number="104" hits="1" branch="False" />
+                <line number="105" hits="1" branch="False" />
+                <line number="106" hits="1" branch="False" />
+                <line number="107" hits="1" branch="False" />
+                <line number="108" hits="1" branch="False" />
+                <line number="109" hits="1" branch="False" />
+                <line number="110" hits="1" branch="False" />
+                <line number="111" hits="1" branch="False" />
+                <line number="112" hits="1" branch="False" />
+                <line number="113" hits="1" branch="False" />
+                <line number="114" hits="1" branch="False" />
+                <line number="115" hits="1" branch="False" />
+                <line number="116" hits="1" branch="False" />
+                <line number="117" hits="1" branch="False" />
+                <line number="129" hits="1" branch="False" />
+                <line number="130" hits="1" branch="False" />
+                <line number="131" hits="1" branch="False" />
+                <line number="132" hits="1" branch="False" />
+                <line number="135" hits="1" branch="False" />
+                <line number="136" hits="1" branch="False" />
+                <line number="139" hits="1" branch="False" />
+                <line number="142" hits="1" branch="False" />
+                <line number="143" hits="1" branch="False" />
+                <line number="144" hits="1" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="87" hits="1" branch="False" />
+            <line number="89" hits="1" branch="False" />
+            <line number="90" hits="1" branch="False" />
+            <line number="93" hits="1" branch="False" />
+            <line number="94" hits="1" branch="False" />
+            <line number="95" hits="1" branch="False" />
+            <line number="96" hits="1" branch="False" />
+            <line number="97" hits="1" branch="False" />
+            <line number="98" hits="1" branch="False" />
+            <line number="99" hits="1" branch="False" />
+            <line number="100" hits="1" branch="False" />
+            <line number="101" hits="1" branch="False" />
+            <line number="102" hits="1" branch="False" />
+            <line number="103" hits="1" branch="False" />
+            <line number="104" hits="1" branch="False" />
+            <line number="105" hits="1" branch="False" />
+            <line number="106" hits="1" branch="False" />
+            <line number="107" hits="1" branch="False" />
+            <line number="108" hits="1" branch="False" />
+            <line number="109" hits="1" branch="False" />
+            <line number="110" hits="1" branch="False" />
+            <line number="111" hits="1" branch="False" />
+            <line number="112" hits="1" branch="False" />
+            <line number="113" hits="1" branch="False" />
+            <line number="114" hits="1" branch="False" />
+            <line number="115" hits="1" branch="False" />
+            <line number="116" hits="1" branch="False" />
+            <line number="117" hits="1" branch="False" />
+            <line number="129" hits="1" branch="False" />
+            <line number="130" hits="1" branch="False" />
+            <line number="131" hits="1" branch="False" />
+            <line number="132" hits="1" branch="False" />
+            <line number="135" hits="1" branch="False" />
+            <line number="136" hits="1" branch="False" />
+            <line number="139" hits="1" branch="False" />
+            <line number="142" hits="1" branch="False" />
+            <line number="143" hits="1" branch="False" />
+            <line number="144" hits="1" branch="False" />
+          </lines>
+        </class>
+        <class name="P7CreateRestApiMSTEST.BidControllerIntegrationTests/&lt;GetValidToken&gt;d__2" filename="source\repos\P7_API_REST\P7CreateRestApiMSTEST\BidControllerIntegrationTests.cs" line-rate="0.8887999999999999" branch-rate="0.5" complexity="4">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="0.8887999999999999" branch-rate="0.5" complexity="4">
+              <lines>
+                <line number="57" hits="1" branch="False" />
+                <line number="58" hits="1" branch="False" />
+                <line number="60" hits="1" branch="False" />
+                <line number="61" hits="1" branch="False" />
+                <line number="62" hits="1" branch="False" />
+                <line number="63" hits="1" branch="False" />
+                <line number="64" hits="1" branch="False" />
+                <line number="67" hits="1" branch="False" />
+                <line number="68" hits="1" branch="False" />
+                <line number="69" hits="1" branch="True" condition-coverage="50% (1/2)">
+                  <conditions>
+                    <condition number="259" type="jump" coverage="50%" />
+                  </conditions>
+                </line>
+                <line number="70" hits="1" branch="False" />
+                <line number="71" hits="1" branch="False" />
+                <line number="72" hits="1" branch="False" />
+                <line number="73" hits="1" branch="True" condition-coverage="50% (1/2)">
+                  <conditions>
+                    <condition number="433" type="jump" coverage="50%" />
+                  </conditions>
+                </line>
+                <line number="74" hits="1" branch="False" />
+                <line number="77" hits="0" branch="False" />
+                <line number="78" hits="0" branch="False" />
+                <line number="80" hits="1" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="57" hits="1" branch="False" />
+            <line number="58" hits="1" branch="False" />
+            <line number="60" hits="1" branch="False" />
+            <line number="61" hits="1" branch="False" />
+            <line number="62" hits="1" branch="False" />
+            <line number="63" hits="1" branch="False" />
+            <line number="64" hits="1" branch="False" />
+            <line number="67" hits="1" branch="False" />
+            <line number="68" hits="1" branch="False" />
+            <line number="69" hits="1" branch="True" condition-coverage="50% (1/2)">
+              <conditions>
+                <condition number="259" type="jump" coverage="50%" />
+              </conditions>
+            </line>
+            <line number="70" hits="1" branch="False" />
+            <line number="71" hits="1" branch="False" />
             <line number="72" hits="1" branch="False" />
-            <line number="73" hits="1" branch="False" />
-            <line number="121" hits="0" branch="False" />
+            <line number="73" hits="1" branch="True" condition-coverage="50% (1/2)">
+              <conditions>
+                <condition number="433" type="jump" coverage="50%" />
+              </conditions>
+            </line>
+            <line number="74" hits="1" branch="False" />
+            <line number="77" hits="0" branch="False" />
+            <line number="78" hits="0" branch="False" />
+            <line number="80" hits="1" branch="False" />
           </lines>
         </class>
       </classes>
