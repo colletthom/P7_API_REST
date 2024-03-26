@@ -12,6 +12,7 @@ using Dot.Net.WebApi;
 using P7CreateRestApi;
 using Microsoft.OpenApi.Models;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
 
 internal class Program
 {
@@ -19,6 +20,15 @@ internal class Program
     {
         var builder = WebApplication.CreateBuilder(args);
         var configuration = builder.Configuration;
+
+        //pour les tests:
+        builder.Services.AddHttpClient();
+        builder.Services.AddHttpClient("ClientName1", client =>
+        {
+            client.BaseAddress = new Uri("https://localhost:7210/api/");
+            client.Timeout = TimeSpan.FromSeconds(builder.Configuration.GetValue<int>("HttpClientConfig:ClientName1:TimeoutSeconds"));
+            // Autres configurations de client au besoin
+        });
 
         // Add services to the container.
         builder.Services.AddScoped<BidRepository>();

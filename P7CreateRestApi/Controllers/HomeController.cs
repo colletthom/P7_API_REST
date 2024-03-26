@@ -11,7 +11,7 @@ namespace Dot.Net.WebApi.Controllers
     [Route("api/")]
     public class HomeController : ControllerBase
     {      
-
+/*
         [HttpGet]
         public IActionResult Get()
         {
@@ -25,6 +25,6 @@ namespace Dot.Net.WebApi.Controllers
         public IActionResult Admin()
         {
             return Ok();
-        }
+        }*/
     }
 }
