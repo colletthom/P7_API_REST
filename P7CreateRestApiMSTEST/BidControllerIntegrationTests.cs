@@ -24,6 +24,9 @@ using Microsoft.Extensions.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NuGet.Common;
+using Microsoft.EntityFrameworkCore;
+using System.Configuration;
+
 
 namespace P7CreateRestApiMSTEST
 {
@@ -31,24 +34,22 @@ namespace P7CreateRestApiMSTEST
     [Authorize(Policy = "AccessWriteActions")]
     public class BidControllerIntegrationTests
     {
-        //private readonly IConfiguration _configuration;
-        //private readonly IHttpClientFactory _clientFactory;
         private ServiceProvider _serviceProvider;
 
         [TestInitialize]
         public void Setup()
         {
             var services = new ServiceCollection();
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
 
+            services.AddDbContext<LocalDbContext>(options =>
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), providerOptions => providerOptions.EnableRetryOnFailure()));
             // J'ajoute les services nécessaires au conteneur, y compris IHttpClientFactory si nécessaire
             services.AddHttpClient();
             // J'ajoute d'autres services nécessaires au conteneur
-
-            // J'ajoute la configuration à partir de appsettings.json
-            var configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .Build();
-            services.AddSingleton<IConfiguration>(configuration);
 
             _serviceProvider = services.BuildServiceProvider();
         }
@@ -78,16 +79,14 @@ namespace P7CreateRestApiMSTEST
                 return null;
             }
         }
-
-
+  
         [TestMethod]
-        [Description("...")]
-        //public async Task BidControllerTest()
-        public async Task BidControllerTest()
+        [Description("Test to create with good Bid and Bad Bid and Delete")]
+        public async Task AddPutDeleteBidControllerTest()
         {
             //Assert.Fail("test");
             var _clientFactory = _serviceProvider.GetRequiredService<IHttpClientFactory>();
-            var configuration = _serviceProvider.GetRequiredService<IConfiguration>();
+            var _context = _serviceProvider.GetRequiredService<LocalDbContext>();
 
             // Arrange
             var newBid = new Bid
@@ -116,15 +115,57 @@ namespace P7CreateRestApiMSTEST
                 Side = "Test intégration"
             };
 
+            var newBidUpdate = new Bid
+            {
+                // Remplissez les propriétés du nouvel objet Bid selon les besoins de votre test
+                Account = "Test Account Update",
+                BidType = "Test BidType",
+                BidQuantity = 0,
+                AskQuantity = 0,
+                Bid2 = 0,
+                Ask = 0,
+                Benchmark = "Test intégration",
+                BidListDate = DateTime.UtcNow,
+                Commentary = "Test intégration",
+                BidSecurity = "Test intégration",
+                BidStatus = "Test intégration",
+                Trader = "Test intégration",
+                Book = "Test intégration",
+                CreationName = "Test intégration",
+                CreationDate = DateTime.UtcNow,
+                RevisionName = "Test intégration",
+                RevisionDate = DateTime.UtcNow,
+                DealName = "Test intégration",
+                DealType = "Test intégration",
+                SourceListId = "Test intégration",
+                Side = "Test intégration"
+            };
 
-
-            /*// Récupérer la chaîne de connexion depuis appsettings.json
-            var connectionString = _configuration.GetConnectionString("DefaultConnection");
-
-            // Utiliser la chaîne de connexion pour créer une instance du contexte de base de données
-            var options = new DbContextOptionsBuilder<LocalDbContext>()
-                .UseSqlServer(connectionString)
-                .Options;*/
+            var newBidFalse = new Bid
+            {
+                // Remplissez les propriétés du nouvel objet Bid selon les besoins de votre test
+                //Account = "Test Account",
+                BidType = "Test BidType",
+                BidQuantity = 0,
+                AskQuantity = 0,
+                Bid2 = 0,
+                Ask = 0,
+                Benchmark = "Test intégration",
+                BidListDate = DateTime.UtcNow,
+                Commentary = "Test intégration",
+                BidSecurity = "Test intégration",
+                BidStatus = "Test intégration",
+                Trader = "Test intégration",
+                Book = "Test intégration",
+                CreationName = "Test intégration",
+                CreationDate = DateTime.UtcNow,
+                RevisionName = "Test intégration",
+                RevisionDate = DateTime.UtcNow,
+                DealName = "Test intégration",
+                DealType = "Test intégration",
+                SourceListId = "Test intégration",
+                Side = "Test intégration"
+            };
 
             var client = _clientFactory.CreateClient(); // Création d'une instance d'objet HttpClient
             client.BaseAddress = new Uri("https://localhost:7210");
@@ -137,6 +178,89 @@ namespace P7CreateRestApiMSTEST
 
             // Act
             var response = await client.PostAsJsonAsync("/api/Bid", newBid);
+            var responseFalse = await client.PostAsJsonAsync("/api/bid", newBidFalse);
+
+            // Assert
+            response.EnsureSuccessStatusCode();
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreNotEqual(HttpStatusCode.OK, responseFalse.StatusCode);
+
+            //Update
+            // Récupérer l'ID de la ressource à supprimer
+            var id = _context.Bids
+                .Where(b => b.BidType == "Test BidType")
+                .OrderBy(b => b.BidId)
+                .Select(b => b.BidId)
+                .LastOrDefault();
+
+            if (id != null)
+            {
+                string updateUri = $"/api/Bid/{id}";
+                var responseUpdate = await client.PutAsJsonAsync(updateUri, newBidUpdate);
+
+                responseUpdate.EnsureSuccessStatusCode();
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            }
+
+            //Delete
+
+            if (id != null)
+            {
+                string deleteUri = $"/api/Bid/{id}";
+                var responseDelete = await client.DeleteAsync(deleteUri);
+
+                responseDelete.EnsureSuccessStatusCode();
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [Description("Test to GetAll Bid")]
+        public async Task GetAllBidControllerTest()
+        {
+            var _clientFactory = _serviceProvider.GetRequiredService<IHttpClientFactory>();
+ 
+            var client = _clientFactory.CreateClient(); // Création d'une instance d'objet HttpClient
+            client.BaseAddress = new Uri("https://localhost:7210");
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            //récupération du Token
+            var token = await GetValidToken(); // Récupérer le jeton d'authentification
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            // Act
+            var response = await client.GetAsync("/api/Bid");
+ 
+            // Assert
+            response.EnsureSuccessStatusCode();
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [TestMethod]
+        [Description("Test to Get Bid By Id")]
+
+        public async Task GetBidByIdControllerTest()
+        {
+            var _clientFactory = _serviceProvider.GetRequiredService<IHttpClientFactory>();
+            var _context = _serviceProvider.GetRequiredService<LocalDbContext>();
+
+            var client = _clientFactory.CreateClient(); // Création d'une instance d'objet HttpClient
+            client.BaseAddress = new Uri("https://localhost:7210");
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            //récupération du Token
+            var token = await GetValidToken(); // Récupérer le jeton d'authentification
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var id = _context.Bids
+                .OrderBy(b => b.BidId)
+                .Select(b => b.BidId)
+                .LastOrDefault();
+
+            // Act
+            var response = await client.GetAsync($"/api/Bid/{id}");
 
             // Assert
             response.EnsureSuccessStatusCode();

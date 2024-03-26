@@ -5,8 +5,6 @@ VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P7CreateRestApi", "P7CreateRestApi\P7CreateRestApi.csproj", "{CD72E8FF-4E16-4807-ABBA-F4D163825ECA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P7CreateRestApi.TestIntegration", "P7CreateRestApi.TestIntegration\P7CreateRestApi.TestIntegration.csproj", "{731B3E56-A1D7-452C-90BD-E26E088990E1}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P7CreateRestApiMSTEST", "P7CreateRestApiMSTEST\P7CreateRestApiMSTEST.csproj", "{D22AC322-29EE-4909-BFD9-F4FBCD9419C5}"
 EndProject
 Global
@@ -19,10 +17,6 @@ Global
 		{CD72E8FF-4E16-4807-ABBA-F4D163825ECA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD72E8FF-4E16-4807-ABBA-F4D163825ECA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD72E8FF-4E16-4807-ABBA-F4D163825ECA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{731B3E56-A1D7-452C-90BD-E26E088990E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{731B3E56-A1D7-452C-90BD-E26E088990E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{731B3E56-A1D7-452C-90BD-E26E088990E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{731B3E56-A1D7-452C-90BD-E26E088990E1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D22AC322-29EE-4909-BFD9-F4FBCD9419C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D22AC322-29EE-4909-BFD9-F4FBCD9419C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D22AC322-29EE-4909-BFD9-F4FBCD9419C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
