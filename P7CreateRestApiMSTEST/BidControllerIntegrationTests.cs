@@ -37,6 +37,7 @@ namespace P7CreateRestApiMSTEST
         private ServiceProvider _serviceProvider;
 
         [TestInitialize]
+
         public void Setup()
         {
             var services = new ServiceCollection();
@@ -47,6 +48,7 @@ namespace P7CreateRestApiMSTEST
 
             services.AddDbContext<LocalDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), providerOptions => providerOptions.EnableRetryOnFailure()));
+            
             // J'ajoute les services nécessaires au conteneur, y compris IHttpClientFactory si nécessaire
             services.AddHttpClient();
             // J'ajoute d'autres services nécessaires au conteneur
@@ -84,7 +86,6 @@ namespace P7CreateRestApiMSTEST
         [Description("Test to create with good Bid and Bad Bid and Delete")]
         public async Task AddPutDeleteBidControllerTest()
         {
-            //Assert.Fail("test");
             var _clientFactory = _serviceProvider.GetRequiredService<IHttpClientFactory>();
             var _context = _serviceProvider.GetRequiredService<LocalDbContext>();
 

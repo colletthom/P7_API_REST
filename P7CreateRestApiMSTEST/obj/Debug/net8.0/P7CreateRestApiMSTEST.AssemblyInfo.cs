@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("P7CreateRestApiMSTEST")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3e4667018e5f40091729ce12817ff456a771625f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3315f579df9f017958b83babbe8b5aa2ce494fbe")]
 [assembly: System.Reflection.AssemblyProductAttribute("P7CreateRestApiMSTEST")]
 [assembly: System.Reflection.AssemblyTitleAttribute("P7CreateRestApiMSTEST")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
