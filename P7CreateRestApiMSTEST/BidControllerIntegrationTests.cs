@@ -1,18 +1,10 @@
-using Microsoft.AspNetCore.Mvc.Testing;
-using static System.Net.WebRequestMethods;
-using System.Text;
-using System;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
 using System.Net.Http.Json;
 using System.Net;
 using Dot.Net.WebApi.Controllers;
 using Dot.Net.WebApi.Domain;
 using P7CreateRestApi.Models;
 using System.Net.Http.Headers;
-using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Internal;
-using Azure.Identity;
 using LoginModel = P7CreateRestApi.Models.LoginModel;
-using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using Microsoft.EntityFrameworkCore;
 using Dot.Net.WebApi.Data;
