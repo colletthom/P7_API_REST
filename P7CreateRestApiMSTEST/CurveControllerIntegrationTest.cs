@@ -1,4 +1,4 @@
-using System.Net.Http.Json;
+ï»¿using System.Net.Http.Json;
 using System.Net;
 using Dot.Net.WebApi.Controllers;
 using Dot.Net.WebApi.Domain;
@@ -24,7 +24,7 @@ namespace P7CreateRestApiMSTEST
 {
     [TestClass]
     [Authorize(Policy = "AccessWriteActions")]
-    public class BidControllerIntegrationTests
+    public class CurveControllerIntegrationTests
     {
         private ServiceProvider _serviceProvider;
 
@@ -40,10 +40,10 @@ namespace P7CreateRestApiMSTEST
 
             services.AddDbContext<LocalDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), providerOptions => providerOptions.EnableRetryOnFailure()));
-            
-            // J'ajoute les services nécessaires au conteneur, y compris IHttpClientFactory si nécessaire
+
+            // J'ajoute les services nÃ©cessaires au conteneur, y compris IHttpClientFactory si nÃ©cessaire
             services.AddHttpClient();
-            // J'ajoute d'autres services nécessaires au conteneur
+            // J'ajoute d'autres services nÃ©cessaires au conteneur
 
             _serviceProvider = services.BuildServiceProvider();
         }
@@ -58,7 +58,7 @@ namespace P7CreateRestApiMSTEST
                 Password = "P@ssword123"
             };
 
-            // J'utilise HttpClient pour envoyer une requête POST à mon API pour obtenir un jeton
+            // J'utilise HttpClient pour envoyer une requÃªte POST Ã  mon API pour obtenir un jeton
             _client.BaseAddress = new Uri("https://localhost:7210");
             var response = await _client.PostAsJsonAsync("/token/GetToken", loginModel);
             if (response.IsSuccessStatusCode)
@@ -73,105 +73,58 @@ namespace P7CreateRestApiMSTEST
                 return null;
             }
         }
-  
+
         [TestMethod]
-        [Description("Test to create with good Bid and Bad Bid, Update and Delete")]
-        public async Task AddPutDeleteBidControllerTest()
+        [Description("Test to create with good Curve and Bad Curve, Update and Delete")]
+        public async Task AddPutDeleteCurveControllerTest()
         {
             var _clientFactory = _serviceProvider.GetRequiredService<IHttpClientFactory>();
             var _context = _serviceProvider.GetRequiredService<LocalDbContext>();
 
             // Arrange
-            var newBid = new Bid
+            var newCurve = new CurvePoint
             {
-                // Remplissez les propriétés du nouvel objet Bid selon les besoins de votre test
-                Account = "Test Account",
-                BidType = "Test BidType",
-                BidQuantity = 0,
-                AskQuantity = 0,
-                Bid2 = 0,
-                Ask = 0,
-                Benchmark = "Test intégration",
-                BidListDate = DateTime.UtcNow,
-                Commentary = "Test intégration",
-                BidSecurity = "Test intégration",
-                BidStatus = "Test intégration",
-                Trader = "Test intégration",
-                Book = "Test intégration",
-                CreationName = "Test intégration",
+                // Remplissez les propriÃ©tÃ©s du nouvel objet Bid selon les besoins de votre test
+                CurveId = 0,
+                AsOfDate = DateTime.UtcNow,
+                Term = 0,
+                CurvePointValue = 0,
                 CreationDate = DateTime.UtcNow,
-                RevisionName = "Test intégration",
-                RevisionDate = DateTime.UtcNow,
-                DealName = "Test intégration",
-                DealType = "Test intégration",
-                SourceListId = "Test intégration",
-                Side = "Test intégration"
             };
 
-            var newBidUpdate = new Bid
+            var newCurveUpdate = new CurvePoint
             {
-                // Remplissez les propriétés du nouvel objet Bid selon les besoins de votre test
-                Account = "Test Account Update",
-                BidType = "Test BidType",
-                BidQuantity = 0,
-                AskQuantity = 0,
-                Bid2 = 0,
-                Ask = 0,
-                Benchmark = "Test intégration",
-                BidListDate = DateTime.UtcNow,
-                Commentary = "Test intégration",
-                BidSecurity = "Test intégration",
-                BidStatus = "Test intégration",
-                Trader = "Test intégration",
-                Book = "Test intégration",
-                CreationName = "Test intégration",
+                // Remplissez les propriÃ©tÃ©s du nouvel objet Bid selon les besoins de votre test
+                CurveId = 0,
+                AsOfDate = DateTime.UtcNow,
+                Term = 1,
+                CurvePointValue = 0,
                 CreationDate = DateTime.UtcNow,
-                RevisionName = "Test intégration",
-                RevisionDate = DateTime.UtcNow,
-                DealName = "Test intégration",
-                DealType = "Test intégration",
-                SourceListId = "Test intégration",
-                Side = "Test intégration"
             };
 
-            var newBidFalse = new Bid
+            var newCurveFalse = new CurvePoint
             {
-                // Remplissez les propriétés du nouvel objet Bid selon les besoins de votre test
-                //Account = "Test Account",
-                BidType = "Test BidType",
-                BidQuantity = 0,
-                AskQuantity = 0,
-                Bid2 = 0,
-                Ask = 0,
-                Benchmark = "Test intégration",
-                BidListDate = DateTime.UtcNow,
-                Commentary = "Test intégration",
-                BidSecurity = "Test intégration",
-                BidStatus = "Test intégration",
-                Trader = "Test intégration",
-                Book = "Test intégration",
-                CreationName = "Test intégration",
+                // Remplissez les propriÃ©tÃ©s du nouvel objet Bid selon les besoins de votre test
+                CurveId = 0,
+                AsOfDate = DateTime.UtcNow,
+                //Terme doit Ãªtre positif
+                Term = -10,
+                CurvePointValue = 0,
                 CreationDate = DateTime.UtcNow,
-                RevisionName = "Test intégration",
-                RevisionDate = DateTime.UtcNow,
-                DealName = "Test intégration",
-                DealType = "Test intégration",
-                SourceListId = "Test intégration",
-                Side = "Test intégration"
             };
 
-            var client = _clientFactory.CreateClient(); // Création d'une instance d'objet HttpClient
+            var client = _clientFactory.CreateClient(); // CrÃ©ation d'une instance d'objet HttpClient
             client.BaseAddress = new Uri("https://localhost:7210");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            //récupération du Token
-            var token = await GetValidToken(); // Récupérer le jeton d'authentification
+            //rÃ©cupÃ©ration du Token
+            var token = await GetValidToken(); // RÃ©cupÃ©rer le jeton d'authentification
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             // Act
-            var response = await client.PostAsJsonAsync("/api/Bid", newBid);
-            var responseFalse = await client.PostAsJsonAsync("/api/bid", newBidFalse);
+            var response = await client.PostAsJsonAsync("/api/Curve", newCurve);
+            var responseFalse = await client.PostAsJsonAsync("/api/Curve", newCurveFalse);
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -179,17 +132,17 @@ namespace P7CreateRestApiMSTEST
             Assert.AreNotEqual(HttpStatusCode.OK, responseFalse.StatusCode);
 
             //Update
-            // Récupérer l'ID de la ressource à supprimer
-            var id = _context.Bids
-                .Where(b => b.BidType == "Test BidType")
-                .OrderBy(b => b.BidId)
-                .Select(b => b.BidId)
+            // RÃ©cupÃ©rer l'ID de la ressource Ã  supprimer
+            var id = _context.CurvePoints
+                .Where(b => b.CurveId == 0)
+                .OrderBy(b => b.Id)
+                .Select(b => b.Id)
                 .LastOrDefault();
 
             if (id != null)
             {
-                string updateUri = $"/api/Bid/{id}";
-                var responseUpdate = await client.PutAsJsonAsync(updateUri, newBidUpdate);
+                string updateUri = $"/api/Curve/{id}";
+                var responseUpdate = await client.PutAsJsonAsync(updateUri, newCurveUpdate);
 
                 responseUpdate.EnsureSuccessStatusCode();
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -199,7 +152,7 @@ namespace P7CreateRestApiMSTEST
 
             if (id != null)
             {
-                string deleteUri = $"/api/Bid/{id}";
+                string deleteUri = $"/api/Curve/{id}";
                 var responseDelete = await client.DeleteAsync(deleteUri);
 
                 responseDelete.EnsureSuccessStatusCode();
@@ -208,52 +161,52 @@ namespace P7CreateRestApiMSTEST
         }
 
         [TestMethod]
-        [Description("Test to GetAll Bid")]
-        public async Task GetAllBidControllerTest()
+        [Description("Test to GetAll Curve")]
+        public async Task GetAllCurveControllerTest()
         {
             var _clientFactory = _serviceProvider.GetRequiredService<IHttpClientFactory>();
- 
-            var client = _clientFactory.CreateClient(); // Création d'une instance d'objet HttpClient
+
+            var client = _clientFactory.CreateClient(); // CrÃ©ation d'une instance d'objet HttpClient
             client.BaseAddress = new Uri("https://localhost:7210");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            //récupération du Token
-            var token = await GetValidToken(); // Récupérer le jeton d'authentification
+            //rÃ©cupÃ©ration du Token
+            var token = await GetValidToken(); // RÃ©cupÃ©rer le jeton d'authentification
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             // Act
-            var response = await client.GetAsync("/api/Bid");
- 
+            var response = await client.GetAsync("/api/Curve");
+
             // Assert
             response.EnsureSuccessStatusCode();
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
         [TestMethod]
-        [Description("Test to Get Bid By Id")]
+        [Description("Test to Get Curve By Id")]
 
-        public async Task GetBidByIdControllerTest()
+        public async Task GetCurveByIdControllerTest()
         {
             var _clientFactory = _serviceProvider.GetRequiredService<IHttpClientFactory>();
             var _context = _serviceProvider.GetRequiredService<LocalDbContext>();
 
-            var client = _clientFactory.CreateClient(); // Création d'une instance d'objet HttpClient
+            var client = _clientFactory.CreateClient(); // CrÃ©ation d'une instance d'objet HttpClient
             client.BaseAddress = new Uri("https://localhost:7210");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            //récupération du Token
-            var token = await GetValidToken(); // Récupérer le jeton d'authentification
+            //rÃ©cupÃ©ration du Token
+            var token = await GetValidToken(); // RÃ©cupÃ©rer le jeton d'authentification
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var id = _context.Bids
-                .OrderBy(b => b.BidId)
-                .Select(b => b.BidId)
+            var id = _context.CurvePoints
+                .OrderBy(b => b.Id)
+                .Select(b => b.Id)
                 .LastOrDefault();
 
             // Act
-            var response = await client.GetAsync($"/api/Bid/{id}");
+            var response = await client.GetAsync($"/api/Curve/{id}");
 
             // Assert
             response.EnsureSuccessStatusCode();

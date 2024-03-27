@@ -59,25 +59,8 @@ namespace Dot.Net.WebApi.Repositories
                 return false;
             }
 
-            existingUser.FullName = user.FullName;
             existingUser.Role = user.Role;
-            existingUser.UserName = user.UserName;
 
-            if (!string.IsNullOrEmpty(user.Password))
-            {
-                var newPasswordHash = _passwordHasher.HashPassword(existingUser, user.Password);
-                existingUser.PasswordHash = newPasswordHash;
-            }
-
-            if (!string.IsNullOrEmpty(user.Password))
-            {
-                var token = await _userManager.GeneratePasswordResetTokenAsync(existingUser);
-                var result = await _userManager.ResetPasswordAsync(existingUser, token, user.Password);
-                if (!result.Succeeded)
-                {
-                    return new { Errors = result.Errors };
-                }
-            }
             var updateResult = await _userManager.UpdateAsync(existingUser);
 
             if (!updateResult.Succeeded)
