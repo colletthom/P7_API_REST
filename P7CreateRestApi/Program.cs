@@ -16,7 +16,7 @@ using System.Net.Http.Headers;
 
 public class Program
 {
-    private static void Main(string[] args)
+    public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
         var configuration = builder.Configuration;
@@ -90,7 +90,7 @@ public class Program
         });
 
 
-        builder.Services.AddDbContext<LocalDbContext>(options =>
+        builder.Services.AddDbContext<IDbContext, LocalDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
         builder.Services.AddIdentity<User, IdentityRole>(options =>

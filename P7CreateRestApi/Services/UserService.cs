@@ -9,11 +9,11 @@ namespace Dot.Net.WebApi.Repositories
 {
     public class UserService
     {
-        public LocalDbContext _context { get; }
+        public IDbContext _context { get; }
         private readonly UserManager<User> _userManager;
         private readonly IPasswordHasher<User> _passwordHasher;
 
-        public UserService(LocalDbContext context, UserManager<User> userManager, IPasswordHasher<User> passwordHasher)
+        public UserService(IDbContext context, UserManager<User> userManager, IPasswordHasher<User> passwordHasher)
         {
             _context = context;
             _userManager = userManager;

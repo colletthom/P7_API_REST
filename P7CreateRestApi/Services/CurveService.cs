@@ -5,9 +5,9 @@ namespace Dot.Net.WebApi.Repositories
 {
     public class CurveService
     {
-        private LocalDbContext _context { get; }
+        private IDbContext _context { get; }
 
-        public CurveService(LocalDbContext context)
+        public CurveService(IDbContext context)
         {
             _context = context;
         }

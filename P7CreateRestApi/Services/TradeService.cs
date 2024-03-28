@@ -5,9 +5,9 @@ namespace Dot.Net.WebApi.Repositories
 {
     public class TradeService
     {
-        private LocalDbContext _context { get; }
+        private IDbContext _context { get; }
 
-        public TradeService(LocalDbContext context)
+        public TradeService(IDbContext context)
         {
             _context = context;
         }

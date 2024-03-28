@@ -5,9 +5,9 @@ namespace Dot.Net.WebApi.Repositories
 {
     public class BidRepository
     {
-        private LocalDbContext _context { get; } 
+        private IDbContext _context { get; } 
 
-        public BidRepository(LocalDbContext context)
+        public BidRepository(IDbContext context)
         {
             _context = context;
         }

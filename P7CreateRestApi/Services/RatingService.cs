@@ -5,9 +5,9 @@ namespace Dot.Net.WebApi.Repositories
 {
     public class RatingService
     {
-        private LocalDbContext _context { get; }
+        private IDbContext _context { get; }
 
-        public RatingService(LocalDbContext context)
+        public RatingService(IDbContext context)
         {
             _context = context;
         }

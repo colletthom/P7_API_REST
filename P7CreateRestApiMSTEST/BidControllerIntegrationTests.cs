@@ -27,9 +27,8 @@ namespace P7CreateRestApiMSTEST
     public class BidControllerIntegrationTests
     {
         private ServiceProvider _serviceProvider;
-
+ 
         [TestInitialize]
-
         public void Setup()
         {
             var services = new ServiceCollection();
@@ -38,7 +37,7 @@ namespace P7CreateRestApiMSTEST
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            services.AddDbContext<LocalDbContext>(options =>
+           services.AddDbContext<LocalDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), providerOptions => providerOptions.EnableRetryOnFailure()));
             
             // J'ajoute les services nécessaires au conteneur, y compris IHttpClientFactory si nécessaire
@@ -180,31 +179,32 @@ namespace P7CreateRestApiMSTEST
 
             //Update
             // Récupérer l'ID de la ressource à supprimer
-            var id = _context.Bids
+                var id = _context.Bids
                 .Where(b => b.BidType == "Test BidType")
                 .OrderBy(b => b.BidId)
                 .Select(b => b.BidId)
                 .LastOrDefault();
 
-            if (id != null)
-            {
-                string updateUri = $"/api/Bid/{id}";
-                var responseUpdate = await client.PutAsJsonAsync(updateUri, newBidUpdate);
 
-                responseUpdate.EnsureSuccessStatusCode();
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            }
+                if (id != null)
+                {
+                    string updateUri = $"/api/Bid/{id}";
+                    var responseUpdate = await client.PutAsJsonAsync(updateUri, newBidUpdate);
 
-            //Delete
+                    responseUpdate.EnsureSuccessStatusCode();
+                    Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                }
 
-            if (id != null)
-            {
-                string deleteUri = $"/api/Bid/{id}";
-                var responseDelete = await client.DeleteAsync(deleteUri);
+                //Delete
 
-                responseDelete.EnsureSuccessStatusCode();
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            }
+                if (id != null)
+                {
+                    string deleteUri = $"/api/Bid/{id}";
+                    var responseDelete = await client.DeleteAsync(deleteUri);
+
+                    responseDelete.EnsureSuccessStatusCode();
+                    Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                }
         }
 
         [TestMethod]

@@ -4,7 +4,22 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Dot.Net.WebApi.Data
 {
-    public class LocalDbContext : DbContext
+    public interface IDbContext
+    {
+        DbSet<Bid> Bids { get; set; }
+        DbSet<Bid> Users { get; set; }
+
+        DbSet<Bid> CurvePoints { get; set; }
+
+        DbSet<Bid> Ratings { get; set; }
+
+        DbSet<Bid> RuleNames { get; set; }
+
+        DbSet<Bid> Trades { get; set; }
+
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+    }
+    public class LocalDbContext : DbContext, IDbContext
     {
         public LocalDbContext(DbContextOptions<LocalDbContext> options) : base(options) { }
 
