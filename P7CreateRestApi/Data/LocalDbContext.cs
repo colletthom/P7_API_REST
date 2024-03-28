@@ -7,15 +7,15 @@ namespace Dot.Net.WebApi.Data
     public interface IDbContext
     {
         DbSet<Bid> Bids { get; set; }
-        DbSet<Bid> Users { get; set; }
+        DbSet<User> Users { get; set; }
 
-        DbSet<Bid> CurvePoints { get; set; }
+        DbSet<CurvePoint> CurvePoints { get; set; }
 
-        DbSet<Bid> Ratings { get; set; }
+        DbSet<Rating> Ratings { get; set; }
 
-        DbSet<Bid> RuleNames { get; set; }
+        DbSet<RuleName> RuleNames { get; set; }
 
-        DbSet<Bid> Trades { get; set; }
+        DbSet<Trade> Trades { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
