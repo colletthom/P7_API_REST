@@ -17,7 +17,7 @@ using P7CreateRestApi.Models;
 namespace Dot.Net.WebApi.Tests.Repositories
 {
     [TestClass]
-    public class CurvePointCurvePointTests
+    public class RuleNameTests
     {
         private ServiceProvider _serviceProvider;
 
@@ -59,32 +59,33 @@ namespace Dot.Net.WebApi.Tests.Repositories
         }
 
         [TestMethod]
-        public async Task AddCurvePointUnitTest()
+        public async Task AddRuleNameUnitTest()
         {
             // Arrange
             var mockContext = new Mock<IDbContext>();
-            var mockDbSet = new Mock<DbSet<CurvePoint>>();
+            var mockDbSet = new Mock<DbSet<RuleName>>();
 
-            List<CurvePoint> addedCurvePoints = new List<CurvePoint>();
+            List<RuleName> addedRuleNames = new List<RuleName>();
 
-            mockDbSet.Setup(m => m.Add(It.IsAny<CurvePoint>())).Callback<CurvePoint>((entity) =>
+            mockDbSet.Setup(m => m.Add(It.IsAny<RuleName>())).Callback<RuleName>((entity) =>
             {
-                addedCurvePoints.Add(entity);
+                addedRuleNames.Add(entity);
             });
 
-            mockContext.Setup(m => m.CurvePoints).Returns(mockDbSet.Object);
+            mockContext.Setup(m => m.RuleNames).Returns(mockDbSet.Object);
 
-            var repository = new CurveService(mockContext.Object);
+            var repository = new RuleNameService(mockContext.Object);
             var _clientFactory = _serviceProvider.GetRequiredService<IHttpClientFactory>();
 
-            var CurvePointTrue = new CurvePoint
+            var RuleNameTrue = new RuleName
             {
                 Id = 1,
-                CurveId = 0,
-                AsOfDate = DateTime.UtcNow,
-                Term = 0,
-                CurvePointValue = 0,
-                CreationDate = DateTime.UtcNow,
+                Name = "Test RuleName",
+                Description = "Test RuleName",
+                Json = "Test RuleName",
+                Template = "Test RuleName",
+                SqlStr = "Test RuleName",
+                SqlPart = "Test RuleName",
             };
 
             var client = _clientFactory.CreateClient(); // Création d'une instance d'objet HttpClient
@@ -97,46 +98,48 @@ namespace Dot.Net.WebApi.Tests.Repositories
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             // Act
-            var addedCurvePointTrue = await repository.AddCurve(CurvePointTrue);
+            var addedRuleNameTrue = await repository.AddRuleName(RuleNameTrue);
 
             // Assert
-            Assert.IsNotNull(addedCurvePointTrue);
+            Assert.IsNotNull(addedRuleNameTrue);
         }
 
         [TestMethod]
-        public async Task UpdateCurvePointUnitTest()
+        public async Task UpdateRuleNameUnitTest()
         {
             // Arrange
-            var mockDbSet = new Mock<DbSet<CurvePoint>>();
+            var mockDbSet = new Mock<DbSet<RuleName>>();
             var mockContext = new Mock<IDbContext>();
 
             // Configure la méthode Find du DbSet simulé pour rechercher l'élément dans la liste simulée
-            mockDbSet.Setup(m => m.Find(It.IsAny<object[]>())).Returns(new CurvePoint
+            mockDbSet.Setup(m => m.Find(It.IsAny<object[]>())).Returns(new RuleName
             {
                 Id = 1,
-                CurveId = 0,
-                AsOfDate = DateTime.UtcNow,
-                Term = 0,
-                CurvePointValue = 0,
-                CreationDate = DateTime.UtcNow,
+                Name = "Test RuleName",
+                Description = "Test RuleName",
+                Json = "Test RuleName",
+                Template = "Test RuleName",
+                SqlStr = "Test RuleName",
+                SqlPart = "Test RuleName",
             });
 
-            mockContext.Setup(m => m.CurvePoints).Returns(mockDbSet.Object);
+            mockContext.Setup(m => m.RuleNames).Returns(mockDbSet.Object);
 
-            var repository = new CurveService(mockContext.Object);
+            var repository = new RuleNameService(mockContext.Object);
             var _clientFactory = _serviceProvider.GetRequiredService<IHttpClientFactory>();
 
-            int CurvePointId = 1;
+            int RuleNameId = 1;
 
-            var CurvePointUpdate = new CurvePoint
+            var RuleNameUpdate = new RuleName
             {
                 Id = 1,
-                //Update CurveId
-                CurveId = 99,
-                AsOfDate = DateTime.UtcNow,
-                Term = 0,
-                CurvePointValue = 0,
-                CreationDate = DateTime.UtcNow,
+                //Update RuleNameId
+                Name = "Test RuleName UPDATE",
+                Description = "Test RuleName",
+                Json = "Test RuleName",
+                Template = "Test RuleName",
+                SqlStr = "Test RuleName",
+                SqlPart = "Test RuleName",
             };
 
             var client = _clientFactory.CreateClient(); // Création d'une instance d'objet HttpClient
@@ -149,36 +152,37 @@ namespace Dot.Net.WebApi.Tests.Repositories
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             // Act           
-            var result = await repository.UpdateCurveById(CurvePointId, CurvePointUpdate);
+            var result = await repository.UpdateRuleNameById(RuleNameId, RuleNameUpdate);
 
             // Assert
             Assert.IsTrue(result);
         }
 
         [TestMethod]
-        public async Task DeleteCurvePointUnitTest()
+        public async Task DeleteRuleNameUnitTest()
         {
             // Arrange
-            var mockDbSet = new Mock<DbSet<CurvePoint>>();
+            var mockDbSet = new Mock<DbSet<RuleName>>();
             var mockContext = new Mock<IDbContext>();
 
             // Configure la méthode Find du DbSet simulé pour rechercher l'élément dans la liste simulée
-            mockDbSet.Setup(m => m.FindAsync(It.IsAny<object[]>())).ReturnsAsync(new CurvePoint
+            mockDbSet.Setup(m => m.FindAsync(It.IsAny<object[]>())).ReturnsAsync(new RuleName
             {
                 Id = 1,
-                CurveId = 0,
-                AsOfDate = DateTime.UtcNow,
-                Term = 0,
-                CurvePointValue = 0,
-                CreationDate = DateTime.UtcNow,
+                Name = "Test RuleName",
+                Description = "Test RuleName",
+                Json = "Test RuleName",
+                Template = "Test RuleName",
+                SqlStr = "Test RuleName",
+                SqlPart = "Test RuleName",
             });
 
-            mockContext.Setup(m => m.CurvePoints).Returns(mockDbSet.Object);
+            mockContext.Setup(m => m.RuleNames).Returns(mockDbSet.Object);
 
-            var repository = new CurveService(mockContext.Object);
+            var repository = new RuleNameService(mockContext.Object);
             var _clientFactory = _serviceProvider.GetRequiredService<IHttpClientFactory>();
 
-            int CurvePointId = 1;
+            int RuleNameId = 1;
 
             var client = _clientFactory.CreateClient(); // Création d'une instance d'objet HttpClient
             client.BaseAddress = new Uri("https://localhost:7210");
@@ -190,7 +194,7 @@ namespace Dot.Net.WebApi.Tests.Repositories
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             // Act
-            var result = await repository.DeleteCurveById(CurvePointId);
+            var result = await repository.DeleteRuleNameById(RuleNameId);
 
             // Assert
             Assert.IsTrue(result);

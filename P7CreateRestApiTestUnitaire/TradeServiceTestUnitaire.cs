@@ -1,53 +1,37 @@
-﻿using System.Net.Http.Json;
-using System.Net;
-using Dot.Net.WebApi.Controllers;
-using Dot.Net.WebApi.Domain;
-using P7CreateRestApi.Models;
+﻿using System;
+using System.Data;
 using System.Net.Http.Headers;
-using LoginModel = P7CreateRestApi.Models.LoginModel;
-using Newtonsoft.Json.Linq;
-using Microsoft.EntityFrameworkCore;
+using System.Net.NetworkInformation;
+using System.Threading.Tasks;
 using Dot.Net.WebApi.Data;
+using Dot.Net.WebApi.Domain;
 using Dot.Net.WebApi.Repositories;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Http;
-using Microsoft.Extensions.Configuration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NuGet.Common;
 using Microsoft.EntityFrameworkCore;
-using System.Configuration;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Moq;
+using Newtonsoft.Json.Linq;
+using P7CreateRestApi.Models;
 
 
-namespace P7CreateRestApiMSTEST
+namespace Dot.Net.WebApi.Tests.Repositories
 {
     [TestClass]
-    [Authorize(Policy = "AccessWriteActions")]
-    public class TradeControllerIntegrationTests
+    public class TradeTests
     {
         private ServiceProvider _serviceProvider;
 
         [TestInitialize]
-
         public void Setup()
         {
             var services = new ServiceCollection();
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
-                .Build();
-
-            services.AddDbContext<LocalDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), providerOptions => providerOptions.EnableRetryOnFailure()));
 
             // J'ajoute les services nécessaires au conteneur, y compris IHttpClientFactory si nécessaire
             services.AddHttpClient();
-            // J'ajoute d'autres services nécessaires au conteneur
 
+            //J'ajoute d'autres services nécessaires au conteneur
             _serviceProvider = services.BuildServiceProvider();
         }
-
         private async Task<string> GetValidToken()
         {
             var _client = _serviceProvider.GetRequiredService<HttpClient>();
@@ -75,16 +59,27 @@ namespace P7CreateRestApiMSTEST
         }
 
         [TestMethod]
-        [Description("Test to create with good Trade and Bad Trade, Update and Delete")]
-        public async Task AddPutDeleteTradeControllerTest()
+        public async Task AddTradeUnitTest()
         {
-            var _clientFactory = _serviceProvider.GetRequiredService<IHttpClientFactory>();
-            var _context = _serviceProvider.GetRequiredService<LocalDbContext>();
-
             // Arrange
-            var newTrade = new Trade
+            var mockContext = new Mock<IDbContext>();
+            var mockDbSet = new Mock<DbSet<Trade>>();
+
+            List<Trade> addedTrades = new List<Trade>();
+
+            mockDbSet.Setup(m => m.Add(It.IsAny<Trade>())).Callback<Trade>((entity) =>
             {
-                // Remplissez les propriétés du nouvel objet Trade selon les besoins de votre test
+                addedTrades.Add(entity);
+            });
+
+            mockContext.Setup(m => m.Trades).Returns(mockDbSet.Object);
+
+            var repository = new TradeService(mockContext.Object);
+            var _clientFactory = _serviceProvider.GetRequiredService<IHttpClientFactory>();
+
+            var TradeTrue = new Trade
+            {
+                TradeId = 1,
                 Account = "Test Trade",
                 AccountType = "Test TradeType",
                 BuyQuantity = 0,
@@ -107,11 +102,68 @@ namespace P7CreateRestApiMSTEST
                 Side = "Test intégration"
             };
 
-            var newTradeUpdate = new Trade
+            var client = _clientFactory.CreateClient(); // Création d'une instance d'objet HttpClient
+            client.BaseAddress = new Uri("https://localhost:7210");
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            //récupération du Token
+            var token = await GetValidToken();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            // Act
+            var addedTradeTrue = await repository.AddTrade(TradeTrue);
+
+            // Assert
+            Assert.IsNotNull(addedTradeTrue);
+        }
+
+        [TestMethod]
+        public async Task UpdateTradeUnitTest()
+        {
+            // Arrange
+            var mockDbSet = new Mock<DbSet<Trade>>();
+            var mockContext = new Mock<IDbContext>();
+
+            // Configure la méthode Find du DbSet simulé pour rechercher l'élément dans la liste simulée
+            mockDbSet.Setup(m => m.Find(It.IsAny<object[]>())).Returns(new Trade
             {
-                // Remplissez les propriétés du nouvel objet Trade selon les besoins de votre test
+                TradeId = 1,
                 Account = "Test Trade",
-                AccountType = "Test TradeType Update",
+                AccountType = "Test TradeType",
+                BuyQuantity = 0,
+                SellQuantity = 0,
+                BuyPrice = 0,
+                SellPrice = 0,
+                TradeDate = DateTime.UtcNow,
+                TradeSecurity = "Test intégration",
+                TradeStatus = "Test intégration",
+                Trader = "Test intégration",
+                Benchmark = "Test intégration",
+                Book = "Test intégration",
+                CreationName = "Test intégration",
+                CreationDate = DateTime.UtcNow,
+                RevisionName = "Test intégration",
+                RevisionDate = DateTime.UtcNow,
+                DealName = "Test intégration",
+                DealType = "Test intégration",
+                SourceListId = "Test intégration",
+                Side = "Test intégration"
+            });
+
+            mockContext.Setup(m => m.Trades).Returns(mockDbSet.Object);
+
+            var repository = new TradeService(mockContext.Object);
+            var _clientFactory = _serviceProvider.GetRequiredService<IHttpClientFactory>();
+
+            int TradeId = 1;
+
+            var TradeUpdate = new Trade
+            {
+                TradeId = 1,
+                //Update TradeId
+                Account = "Test Trade UPDATE",
+                AccountType = "Test TradeType",
                 BuyQuantity = 0,
                 SellQuantity = 0,
                 BuyPrice = 0,
@@ -132,11 +184,35 @@ namespace P7CreateRestApiMSTEST
                 Side = "Test intégration"
             };
 
-            var newTradeFalse = new Trade
+            var client = _clientFactory.CreateClient(); // Création d'une instance d'objet HttpClient
+            client.BaseAddress = new Uri("https://localhost:7210");
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            //récupération du Token
+            var token = await GetValidToken();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            // Act           
+            var result = await repository.UpdateTradeById(TradeId, TradeUpdate);
+
+            // Assert
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public async Task DeleteTradeUnitTest()
+        {
+            // Arrange
+            var mockDbSet = new Mock<DbSet<Trade>>();
+            var mockContext = new Mock<IDbContext>();
+
+            // Configure la méthode Find du DbSet simulé pour rechercher l'élément dans la liste simulée
+            mockDbSet.Setup(m => m.FindAsync(It.IsAny<object[]>())).ReturnsAsync(new Trade
             {
-                // Remplissez les propriétés du nouvel objet Trade selon les besoins de votre test
+                TradeId = 1,
                 Account = "Test Trade",
-                //AccountType = "Test TradeType",
+                AccountType = "Test TradeType",
                 BuyQuantity = 0,
                 SellQuantity = 0,
                 BuyPrice = 0,
@@ -155,85 +231,14 @@ namespace P7CreateRestApiMSTEST
                 DealType = "Test intégration",
                 SourceListId = "Test intégration",
                 Side = "Test intégration"
-            };
+            });
 
-            var client = _clientFactory.CreateClient(); // Création d'une instance d'objet HttpClient
-            client.BaseAddress = new Uri("https://localhost:7210");
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            mockContext.Setup(m => m.Trades).Returns(mockDbSet.Object);
 
-            //récupération du Token
-            var token = await GetValidToken(); // Récupérer le jeton d'authentification
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            // Act
-            var response = await client.PostAsJsonAsync("/api/Trade", newTrade);
-            var responseFalse = await client.PostAsJsonAsync("/api/Trade", newTradeFalse);
-
-            // Assert
-            response.EnsureSuccessStatusCode();
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Assert.AreNotEqual(HttpStatusCode.OK, responseFalse.StatusCode);
-
-            //Update
-            // Récupérer l'ID de la ressource à supprimer
-            var id = _context.Trades
-                .Where(b => b.Account == "Test Trade")
-                .OrderBy(b => b.TradeId)
-                .Select(b => b.TradeId)
-                .LastOrDefault();
-
-            if (id != null)
-            {
-                string updateUri = $"/api/Trade/{id}";
-                var responseUpdate = await client.PutAsJsonAsync(updateUri, newTradeUpdate);
-
-                responseUpdate.EnsureSuccessStatusCode();
-                Assert.AreEqual(HttpStatusCode.OK, responseUpdate.StatusCode);
-            }
-
-            //Delete
-
-            if (id != null)
-            {
-                string deleteUri = $"/api/Trade/{id}";
-                var responseDelete = await client.DeleteAsync(deleteUri);
-
-                responseDelete.EnsureSuccessStatusCode();
-                Assert.AreEqual(HttpStatusCode.OK, responseDelete.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [Description("Test to GetAll Trade")]
-        public async Task GetAllTradeControllerTest()
-        {
+            var repository = new TradeService(mockContext.Object);
             var _clientFactory = _serviceProvider.GetRequiredService<IHttpClientFactory>();
 
-            var client = _clientFactory.CreateClient(); // Création d'une instance d'objet HttpClient
-            client.BaseAddress = new Uri("https://localhost:7210");
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            //récupération du Token
-            var token = await GetValidToken(); // Récupérer le jeton d'authentification
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            // Act
-            var response = await client.GetAsync("/api/Trade");
-
-            // Assert
-            response.EnsureSuccessStatusCode();
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        }
-
-        [TestMethod]
-        [Description("Test to Get Trade By Id")]
-
-        public async Task GetTradeByIdControllerTest()
-        {
-            var _clientFactory = _serviceProvider.GetRequiredService<IHttpClientFactory>();
-            var _context = _serviceProvider.GetRequiredService<LocalDbContext>();
+            int TradeId = 1;
 
             var client = _clientFactory.CreateClient(); // Création d'une instance d'objet HttpClient
             client.BaseAddress = new Uri("https://localhost:7210");
@@ -241,20 +246,14 @@ namespace P7CreateRestApiMSTEST
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             //récupération du Token
-            var token = await GetValidToken(); // Récupérer le jeton d'authentification
+            var token = await GetValidToken();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var id = _context.Trades
-                .OrderBy(b => b.TradeId)
-                .Select(b => b.TradeId)
-                .LastOrDefault();
-
             // Act
-            var response = await client.GetAsync($"/api/Trade/{id}");
+            var result = await repository.DeleteTradeById(TradeId);
 
             // Assert
-            response.EnsureSuccessStatusCode();
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.IsTrue(result);
         }
     }
 }

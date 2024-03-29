@@ -147,7 +147,7 @@ namespace P7CreateRestApiMSTEST
                 var responseUpdate = await client.PutAsJsonAsync(updateUri, newRuleNameUpdate);
 
                 responseUpdate.EnsureSuccessStatusCode();
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                Assert.AreEqual(HttpStatusCode.OK, responseUpdate.StatusCode);
             }
 
             //Delete
@@ -158,7 +158,7 @@ namespace P7CreateRestApiMSTEST
                 var responseDelete = await client.DeleteAsync(deleteUri);
 
                 responseDelete.EnsureSuccessStatusCode();
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                Assert.AreEqual(HttpStatusCode.OK, responseDelete.StatusCode);
             }
         }
 

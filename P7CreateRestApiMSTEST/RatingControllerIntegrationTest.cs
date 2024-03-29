@@ -84,7 +84,6 @@ namespace P7CreateRestApiMSTEST
             // Arrange
             var newRating = new Rating
             {
-                // Remplissez les propriétés du nouvel objet Rating selon les besoins de votre test
                 MoodysRating = "A++++",
                 SandPRating = "A++++",
                 FitchRating = "A++++",
@@ -93,7 +92,6 @@ namespace P7CreateRestApiMSTEST
 
             var newRatingUpdate = new Rating
             {
-                // Remplissez les propriétés du nouvel objet Rating selon les besoins de votre test
                 MoodysRating = "A----",
                 SandPRating = "A++++",
                 FitchRating = "A++++",
@@ -102,7 +100,6 @@ namespace P7CreateRestApiMSTEST
 
             var newRatingFalse = new Rating
             {
-                // Remplissez les propriétés du nouvel objet Rating selon les besoins de votre test
                 //MoodysRating = "A++++",
                 SandPRating = "A++++",
                 FitchRating = "A++++",

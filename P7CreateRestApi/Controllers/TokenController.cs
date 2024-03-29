@@ -66,13 +66,13 @@ namespace Dot.Net.WebApi.Controllers
         {
             // Vérifie les informations d'identification de l'utilisateur
             var user = await _userManager.FindByNameAsync(model.UserName);
-            string logDescription = "La création de Token a échouée";
+            string logDescription = $"{model.UserName} Description: La création de Token a échouée";
 
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
                 // Générer le token JWT
                 var token = GenerateJwtToken(user);
-                logDescription = "La création de Token a réussie";
+                logDescription = $"{model.UserName} Description: La création de Token a réussie";
                 await _logService.CreateLog(HttpContext, 1, 7, logDescription);
 
                 return Ok(new { Token = token });
