@@ -62,7 +62,7 @@ namespace Dot.Net.WebApi.Controllers
         [Route("")]
         public async Task<IActionResult> GetAll()
         {
-            var _ruleName = await _context.Bids.ToListAsync();
+            var _ruleName = await _context.RuleNames.ToListAsync();
             string logDescription = "Le GetAll a réussi";
 
             await _logService.CreateLog(HttpContext, 2, 4, logDescription);

@@ -59,9 +59,12 @@ namespace Dot.Net.WebApi.Controllers
              }
 
             var addUser = await _userRepository.AddUser(user);
+
             
             if (addUser is User) 
             {
+                var typedUser = (User)addUser; // Conversion explicite de type
+                logDescription = $"{typedUser.UserName} Description: La création de Token a réussie";
                 await _logService.CreateLog(HttpContext, 1, 6, logDescription);
                 return Ok(addUser);
             }

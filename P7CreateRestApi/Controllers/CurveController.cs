@@ -82,7 +82,7 @@ namespace Dot.Net.WebApi.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             // TODO: get CurvePoint by Id and to model then show to the form
-            var _curve = await _context.CurvePoints.ToListAsync();
+            var _curve = await _context.CurvePoints.FindAsync(id);
             string logDescription = "Le GetCurveById a réussi";
             if (_curve == null)
             {
